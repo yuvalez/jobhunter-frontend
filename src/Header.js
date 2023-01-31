@@ -1,7 +1,6 @@
 import React from 'react';
+import { observer } from "mobx-react";
 import styled from 'styled-components';
-import { FaSearch } from 'react-icons/fa';
-
 
 const NavBar = styled.nav`
     background-color: #dfdfdf;
@@ -31,6 +30,9 @@ const OptionsGroup = styled.ul`
 `;
 
 const OptionsGroupItem = styled.li`
+    display: flex;
+    flex-direction: row;
+    direction: rtl;
 `;
 
 const Link = styled.a`
@@ -38,12 +40,14 @@ const Link = styled.a`
     text-decoration: none;
     height: 100%;
     display: flex;
+    cursor: pointer;
     align-items: center;
     padding: 0 .25rem;
 `;
 
-const Header = () => {
 
+const Header = () => {
+    
     return (
         <NavBar>
             <SiteName>
@@ -51,9 +55,6 @@ const Header = () => {
             </SiteName>
             {/* TODO: add hamburger on mobile */}
             <OptionsGroup>
-                <OptionsGroupItem>
-                    <Link><FaSearch /></Link>
-                </OptionsGroupItem>
                 <OptionsGroupItem>
                     <Link>קצת עלינו</Link>
                 </OptionsGroupItem>
@@ -63,4 +64,4 @@ const Header = () => {
 
 }
 
-export default Header;
+export default observer(Header);
