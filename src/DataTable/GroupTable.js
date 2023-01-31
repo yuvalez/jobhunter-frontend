@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useCallback  } from 'react';
 import { observer } from "mobx-react";
 import styled, { keyframes } from 'styled-components'
 import { FaWhatsapp, FaLinkedin, FaTelegram, FaFacebookSquare } from 'react-icons/fa';
+import { GoLocation } from 'react-icons/go';
 import { DEFAULT_PAGE_SIZE, device } from '../constants';
 import LoadingSpinner from './LoadingSpinner';
 import GroupsStore from '../stores/groupStore';
@@ -68,22 +69,29 @@ const GroupCard = styled.a`
 const GroupCardHeader = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
 `;
+
+const GroupCardFooter = styled.div`
+    display: flex;
+    justify-content: right;
+    align-items: center;
+`;
+
 
 const GroupCardArea = styled.p`
     direction: rtl;
+    margin-right: .25rem;
 `;
 
-const GroupCardIcon = styled.div`
+const GroupCardName = styled.h2`
     direction: rtl;
+    text-align: center;
 `;
 
-const GroupCardName = styled.h3`
+const GroupCardCategory = styled.h3`
     direction: rtl;
-`;
-
-const GroupCardCategory = styled.p`
-    direction: rtl;
+    color: #14141455;
 `;
 
 const GroupList = () => {
@@ -101,7 +109,7 @@ const GroupList = () => {
         }
         
         setTimeout(() => {
-            getDataFromApi(groups.length, DEFAULT_PAGE_SIZE);
+            getDataFromApi(DEFAULT_PAGE_SIZE);
         }, 1000);
         
     }, [groupStore, loadingState]);
@@ -154,9 +162,10 @@ const GroupList = () => {
                             <GroupCardName>
                                 {group.group_name}
                             </GroupCardName>
-                            <GroupCardArea>
-                                {group.area}
-                            </GroupCardArea>
+                            <GroupCardFooter>
+                            <GoLocation />
+                            <GroupCardArea>{group.area || 'כללי'}</GroupCardArea>
+                            </GroupCardFooter>
                         </GroupCard>
                     )  
                 )

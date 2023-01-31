@@ -12,6 +12,7 @@ class GroupsStore {
     listEnd = false;
     loadingState = false;
     categorySuggestions = [];
+    offset = 0;
 
 
     constructor() {
@@ -74,16 +75,16 @@ class GroupsStore {
             })
     } 
 
-    async getDataFromApi(offset, pageSize) {
+    async getDataFromApi(pageSize) {
         this.setLoadingState(true);
-        const requestData = {offset: offset, page_size: pageSize}
+        const requestData = {offset: this.offset, page_size: pageSize}
         // this.textSearch && (requestData.categories = [this.textSearch]);
         requestData.categories = this.categoriesSearch;
         await axios.post(`${BASE_URL}/api/groups`, requestData)
             .then(res => {
                 const newGroups = JSON.parse(res.data);
                 const oldGroups = this.groups;
-                
+                this.offset += newGroups.length;
                 const groups = [...new Map([...oldGroups, ...newGroups].map((item) => [item["group_link"], item])).values()];
                 if (newGroups.length < pageSize) {
                     this.setListEnd(true);
@@ -96,7 +97,8 @@ class GroupsStore {
     async resetGroupsAndSearch() {
         this.setGroups([]);
         this.setListEnd(false);
-        await this.getDataFromApi(0, DEFAULT_PAGE_SIZE);
+        this.offset = 0;
+        await this.getDataFromApi(DEFAULT_PAGE_SIZE);
     }
 }
 
