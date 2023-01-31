@@ -25,7 +25,7 @@ export const device = {
 export const DEFAULT_PAGE_SIZE = 24;
 
 
-const IS_PRODUCTION = false
+const IS_PRODUCTION = true
 
 
 export const BASE_URL = IS_PRODUCTION ? "https://api.huntforavoda.com" : 'http://127.0.0.1:8000';
