@@ -28,4 +28,4 @@ export const DEFAULT_PAGE_SIZE = 24;
 const IS_PRODUCTION = false
 
 
-export const BASE_URL = IS_PRODUCTION ? "https://ec2-18-183-57-250.ap-northeast-1.compute.amazonaws.com" : 'http://127.0.0.1:8000';
+export const BASE_URL = IS_PRODUCTION ? "https://api.huntforavoda.com" : 'http://127.0.0.1:8000';
