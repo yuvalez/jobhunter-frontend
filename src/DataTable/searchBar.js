@@ -1,28 +1,37 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useRef, useState, useEffect } from 'react';
 import { observer } from 'mobx-react';
-import GroupsStore from '../stores/groupStore';
-import styled from 'styled-components';
-import { DEFAULT_PAGE_SIZE, device } from '../constants';
+import GroupsStore from '../stores/GroupStore';
+import styled, { css } from 'styled-components';
+import { device, size as deviceSize } from '../constants';
 import PillsFilter from './pillsFilter';
+import DropDownList from './dropDownList';
+import ColorStore from '../stores/ColorStore';
 
 const SearchBarContainer = styled.div`
-  display: block;
+  margin: 2rem auto;
+  width: ${({ isMobile }) => isMobile ? '100%': '90%'};
+`;
+
+const RowDiv = styled.div`
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  @media ${device.tablet} {
-    width: 50%;
-  }   
-  padding: 1rem;
-  border-radius: 2rem;
-  margin:2rem auto;
+  border-radius: .75rem;
   margin-bottom: 0;
 `;
 
+const PillsRow = styled.div`
+  display: block;
+  width: ${({ isMobile }) => isMobile? '100%' : '50%'};
+  direction: rtl;
+  margin: 0 auto;
+`;
+
+
 const SearchInput = styled.input`
   width: 100%;
-  padding: 1.2rem 2rem;
-  margin-left: 1rem;
+  padding: 1rem 2rem;
   border: none;
   direction: rtl;
   border-radius: .75rem;
@@ -30,12 +39,12 @@ const SearchInput = styled.input`
   font-size: 18px;
   outline:none;
   &::placeholder {
-    color: #ccc;
+    color: ${({ palette }) => palette.search.inputPlaceholder};
   }
 `;
 
 const SearchButton = styled.button`
-  background-color: #2C20AF;
+  background-color: ${({ palette }) => palette.search.button};
   color: white;
   padding: .75rem 1.1rem;
   border: none;
@@ -45,14 +54,17 @@ const SearchButton = styled.button`
   font-size: 1em;
   margin-left:1rem;
   transition: all 0.2s ease-in-out;
+  align-self: stretch;
   &:hover {
-    background-color: #2C20DF;
+    background-color: ${({ palette }) => palette.search.buttonHover};
     transform: scale(1.02);
   }
 `;
 
 const AutoSuggestContainer = styled.div`
-  width: calc(100% - 7.5rem);
+  width: 100%;
+  position: absolute;
+  top: 100%;
   background-color: #fff;
   opacity: ${params => params.showSuggestions ? '1' : '0'};
   height: ${params => params.showSuggestions ? 'inherit' : '0'};
@@ -63,7 +75,7 @@ const AutoSuggestContainer = styled.div`
   direction: rtl;
   margin: 1rem 0rem;
   padding: 1rem;
-  transition: ${params => params.showSuggestions ? 'max-height .15s ease-in' : 'max-height .15s ease-out'};
+  transition: all .15s ease-in-out;
 //   transition: max-height .15s ease-in;
 `;
 
@@ -83,11 +95,21 @@ const AutoSuggestItem = styled.li`
   }
 `;
 
-const RowDiv = styled.div`
+const InputWithSuggestions = styled.div`
   display: flex;
-  justify-content: right;
-  height: ${params => params.showSuggestions === false ? '0' : 'inherit'};
-  max-height: ${params => params.showSuggestions === false ? '0' : '500px'};
+  position: relative;
+  justify-content: center;
+  width: 100%;
+  direction: rtl;
+`;
+
+const InnerRowDiv = styled.div`
+  display: flex;
+  width: ${({ isMobile }) => isMobile ? '100%': '50%'};
+  flex-direction: ${({ isMobile }) => isMobile ? 'column': 'row'};
+  row-gap: .5rem;
+  column-gap: .5rem;
+  margin: 0 1rem;
 `;
 
 const SearchBar = () => {
@@ -95,8 +117,25 @@ const SearchBar = () => {
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const suggestRef = useRef(null);
   const groupStore = useContext(GroupsStore);
-  const { categorySuggestions: suggestions, textSearch, setTextSearch, resetGroupsAndSearch,
-          addCategory, removeCategory, categoriesSearch } = groupStore;
+  const colorStore = useContext(ColorStore);
+  const [width, setWidth] = useState(window.innerWidth);
+  const { colorPalette } = colorStore;
+
+  const handleWindowSizeChange = () => {
+      setWidth(window.innerWidth);
+  }
+
+  useEffect(() => {
+      window.addEventListener('resize', handleWindowSizeChange);
+      return () => {
+          window.removeEventListener('resize', handleWindowSizeChange);
+      }
+  }, []);
+
+  const isMobile = width <= deviceSize.tablet;
+
+  const { categorySuggestions: suggestions, areaSuggestions, textSearch, setTextSearch, resetGroupsAndSearch,
+          addCategory, removeCategory, categoriesSearch, setFilteredArea, area } = groupStore;
 
   
   const handleSearch = (event) => {
@@ -105,15 +144,14 @@ const SearchBar = () => {
     if (suggestions.includes(textSearch) && !categoriesSearch.includes(textSearch)) {
         setShowSuggestions(false);
         addCategory(textSearch);
-        resetGroupsAndSearch();
         setTextSearch('');
     }
+    resetGroupsAndSearch();
   };
 
   const handleInputChange = (event) => {
     setTextSearch(event.target.value);
     console.log(textSearch);
-    // filter suggestions based on input
     const suggestionsWithoutAlreadyChosen = suggestions.filter(el => categoriesSearch.indexOf(el) < 0);
     const filtered = suggestionsWithoutAlreadyChosen.filter((suggestion) =>
       suggestion.toLowerCase().startsWith(event.target.value.toLowerCase())
@@ -130,47 +168,60 @@ const SearchBar = () => {
 };
 
 return (
-  <SearchBarContainer>
+  <SearchBarContainer isMobile={isMobile}>
     <RowDiv>
-    <SearchButton onClick={handleSearch}>חפש</SearchButton>
-    <SearchInput
-      type="text"
-      placeholder="הקלד קטגוריה..."
-      value={textSearch}
-      onChange={handleInputChange}
-      onFocus={(e) => {
-        e.stopPropagation();
-        setShowSuggestions(true);
-      }}
-      onBlur={(e) => {
-        e.stopPropagation();
-        setShowSuggestions(false);
-    }}
-    />
+    <SearchButton onClick={handleSearch} palette={colorPalette}>חפש</SearchButton>
+    <InnerRowDiv isMobile={isMobile}>
+      <DropDownList options={areaSuggestions} setText={setFilteredArea} text={area} isMobile={isMobile} defaultOption={"כל האיזורים"} 
+                    defaultOptionAction={e => {
+                      e.stopPropagation();
+                      setFilteredArea("");
+                    }}
+      />
+      <InputWithSuggestions>
+        <SearchInput
+          palette={colorPalette}
+          type="text"
+          placeholder="הקלד קטגוריה..."
+          value={textSearch}
+          onChange={handleInputChange}
+          onFocus={(e) => {
+            e.stopPropagation();
+            setShowSuggestions(true);
+          }}
+          onBlur={(e) => {
+            e.stopPropagation();
+            setShowSuggestions(false);
+        }}
+        />
+        {textSearch && filteredSuggestions.length > 0 && (
+          <AutoSuggestContainer showSuggestions={showSuggestions || true}>
+            <AutoSuggestList ref={suggestRef}>
+              {filteredSuggestions.map((suggestion) => (
+                <AutoSuggestItem
+                  key={suggestion}
+                  showSuggestions={showSuggestions || true}
+                  onClick={(e) => 
+                    {
+                        e.stopPropagation();
+                        handleSuggestionClick(suggestion)
+                    }}
+                >
+                  {suggestion}
+                </AutoSuggestItem>
+              ))}
+            </AutoSuggestList>
+          </AutoSuggestContainer>
+        )}
+      </InputWithSuggestions>
+    </InnerRowDiv>
     </RowDiv>
-    <RowDiv showSuggestions={showSuggestions}>
-    {textSearch && filteredSuggestions.length > 0 && (
-      <AutoSuggestContainer showSuggestions={showSuggestions}>
-        <AutoSuggestList ref={suggestRef}>
-          {filteredSuggestions.map((suggestion) => (
-            <AutoSuggestItem
-              key={suggestion}
-              showSuggestions={showSuggestions}
-              onClick={(e) => 
-                {
-                    e.stopPropagation();
-                    handleSuggestionClick(suggestion)
-                }}
-            >
-              {suggestion}
-            </AutoSuggestItem>
-          ))}
-        </AutoSuggestList>
-      </AutoSuggestContainer>
+    {categoriesSearch.length > 0 && 
+    (
+      <PillsRow isMobile={isMobile}>
+        <PillsFilter />
+      </PillsRow>
     )}
-    </RowDiv>
-    {/* TODO: Enter filtered here in pill boxes */}
-    <PillsFilter />
   </SearchBarContainer>
 );
 };

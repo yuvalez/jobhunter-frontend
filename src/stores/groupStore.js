@@ -1,4 +1,4 @@
-import { observable, action, makeObservable, computed } from 'mobx';
+import { observable, action, makeObservable } from 'mobx';
 import axios from 'axios';
 import { createContext } from 'react';
 import { BASE_URL, DEFAULT_PAGE_SIZE } from '../constants';
@@ -9,9 +9,11 @@ class GroupsStore {
     textSearch = '';
     categoriesSearch = [];
     groups = [];
+    area = '';
     listEnd = false;
     loadingState = false;
     categorySuggestions = [];
+    areaSuggestions = [];
     offset = 0;
 
 
@@ -19,16 +21,20 @@ class GroupsStore {
         this.getDataFromApi = this.getDataFromApi.bind(this);
         this.resetGroupsAndSearch = this.resetGroupsAndSearch.bind(this);
         this.getCategorySuggestions();
+        this.getAreaSuggestions();
         makeObservable(this, {
             textSearch: observable,
             loadingState: observable,
+            area: observable,
             groups: observable,
             categorySuggestions: observable,
+            areaSuggestions: observable,
             categoriesSearch: observable,
             listEnd: observable,
             setTextSearch: action,
             setGroups: action,
             setLoadingState: action,
+            setFilteredArea: action,
             addCategory: action,
             setListEnd: action,
         })
@@ -48,8 +54,16 @@ class GroupsStore {
         this.textSearch = text;
     }
 
+    setFilteredArea = (area) => {
+        this.area = area;
+    }
+
     setCategorySuggestions = (suggestions) => {
         this.categorySuggestions = suggestions;
+    }
+
+    setAreaSuggestions = (areas) => {
+        this.areaSuggestions = areas;
     }
 
     setGroups = (groups) => {
@@ -71,7 +85,15 @@ class GroupsStore {
             .then(res => {
                 const categories = JSON.parse(res.data);
                 this.setCategorySuggestions(categories);
-                console.log(categories);
+            })
+    } 
+
+    async getAreaSuggestions() {
+        const requestData = {field: 'area'};
+        await axios.post(`${BASE_URL}/api/distinct`, requestData)
+            .then(res => {
+                const areas = JSON.parse(res.data);
+                this.setAreaSuggestions(areas.filter(area => area));
             })
     } 
 
@@ -80,12 +102,13 @@ class GroupsStore {
         const requestData = {offset: this.offset, page_size: pageSize}
         // this.textSearch && (requestData.categories = [this.textSearch]);
         requestData.categories = this.categoriesSearch;
+        this.area && (requestData.areas = [this.area]);
         await axios.post(`${BASE_URL}/api/groups`, requestData)
             .then(res => {
                 const newGroups = JSON.parse(res.data);
                 const oldGroups = this.groups;
-                this.offset += newGroups.length;
                 const groups = [...new Map([...oldGroups, ...newGroups].map((item) => [item["group_link"], item])).values()];
+                this.offset = groups.length;
                 if (newGroups.length < pageSize) {
                     this.setListEnd(true);
                 }

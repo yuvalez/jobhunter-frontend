@@ -1,10 +1,13 @@
-import React from 'react';
-import { observer } from "mobx-react";
+import React, { useContext } from 'react';
+import { observer } from 'mobx-react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import ColorStore from '../stores/ColorStore';
+import DarkModeToggle from './DarkModeToggle';
 
 const NavBar = styled.nav`
-    background-color: #dfdfdf;
-    color: blue;
+    background-color: ${({ palette }) => palette.header.background};
+    color: ${({ palette }) => palette.header.textColor};
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -14,7 +17,7 @@ const NavBar = styled.nav`
 `;
 
 
-const SiteName = styled.a`
+const SiteName = styled(Link)`
     color: inherit;
     text-decoration: none;
     padding: 1rem;
@@ -24,6 +27,7 @@ const SiteName = styled.a`
 const OptionsGroup = styled.ul`
     padding: 0;
     margin: 0;
+    margin-right: 1rem;
     list-style: none;
     display: flex;
     gap: 1rem;
@@ -35,7 +39,7 @@ const OptionsGroupItem = styled.li`
     direction: rtl;
 `;
 
-const Link = styled.a`
+const CustomLink = styled(Link)`
     color: inherit;
     text-decoration: none;
     height: 100%;
@@ -47,17 +51,22 @@ const Link = styled.a`
 
 
 const Header = () => {
-    
+    const colorStore = useContext(ColorStore);
+    const { colorPalette } = colorStore;
     return (
-        <NavBar>
-            <SiteName>
+        <NavBar palette={colorPalette}>
+            <SiteName to="/">
                 Hunt for Avoda
             </SiteName>
             {/* TODO: add hamburger on mobile */}
             <OptionsGroup>
                 <OptionsGroupItem>
-                    <Link>קצת עלינו</Link>
+                    <CustomLink to='/about'>מי אנחנו</CustomLink>
                 </OptionsGroupItem>
+                <OptionsGroupItem>
+                    <DarkModeToggle />
+                </OptionsGroupItem>
+                
             </OptionsGroup>
         </NavBar>
     );

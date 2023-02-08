@@ -2,13 +2,13 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { observer } from 'mobx-react';
 import { FaTimesCircle } from 'react-icons/fa'
-import GroupsStore from '../stores/groupStore';
+import GroupsStore from '../stores/GroupStore';
 
 
 const Wrapper = styled.div`
-    display: flex;
-    justify-content: right;
-    margin-top: 2rem;
+    display: inline-block;
+    direction: rtl;
+    margin-top: 1rem;
 `;
 
 const Pill = styled.div`

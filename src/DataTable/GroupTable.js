@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useCallback  } from 'react';
 import { observer } from "mobx-react";
-import styled, { keyframes } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 import { FaWhatsapp, FaLinkedin, FaTelegram, FaFacebookSquare } from 'react-icons/fa';
 import { GoLocation } from 'react-icons/go';
 import { DEFAULT_PAGE_SIZE, device } from '../constants';
 import LoadingSpinner from './LoadingSpinner';
-import GroupsStore from '../stores/groupStore';
+import GroupsStore from '../stores/GroupStore';
 import SearchBar from './searchBar';
+import ColorStore from '../stores/ColorStore';
 
 const poof = keyframes`
     0% {
@@ -17,6 +18,10 @@ const poof = keyframes`
         opacity: 1;
         transform: translateY(0px);
     }
+`;
+
+const SpinnerSpanStyle = css`
+    grid-column: 1 / -1;
 `;
 
 const TableWrapper = styled.div`
@@ -32,23 +37,26 @@ const TableWrapper = styled.div`
     padding-bottom: 5rem;
     @media ${device.laptopL} {
         grid-template-columns: 1fr 1fr 1fr;
-        width: 50%;
+        width: 60%;
     }
 `;
 
 const PageWrapper = styled.div`
-    display: block;
+    display: flex;
+    flex-direction: column;
+    background-color: ${({ palette }) => palette.body.background}
 `;
 
+// TODO: Box shadow dark mode
 const GroupCard = styled.a`
     opacity: 0;
     animation: ${poof} .5s forwards;
     animation-delay: ${props => (props.idx % DEFAULT_PAGE_SIZE) * 0.07}s;
     transition: all .3s ease;
-    border: 1px solid #eee;
-    box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25), 0 8px 16px -8px hsla(0, 0%, 0%, 0.3), 0 -6px 16px -6px hsla(0, 0%, 0%, 0.03);;
-    border-radius: 0.6em;
-    color: inherit;
+    border: 1px solid ${({ palette }) => palette.table.cardBorder};
+    box-shadow: 0 0.813rem 1.688rem -0.313rem hsla(240, 30.1%, 28%, 0.25), 0 0.5rem 1rem -0.5rem hsla(0, 0%, 0%, 0.3), 0 -0.375rem 1rem -0.375rem hsla(0, 0%, 0%, 0.03);
+    border-radius: 0.75em;
+    background-color: ${({ palette }) => palette.table.cardBackground};
     text-decoration: inherit;
     height: 17rem;
     width: 17rem;
@@ -60,7 +68,7 @@ const GroupCard = styled.a`
     justify-content: space-between;
     &:hover {
         transform: scale(1.03);
-        box-shadow: 0 13px 40px -5px hsla(240, 30.1%, 28%, 0.12), 0 8px 32px -8px hsla(0, 0%, 0%, 0.14), 0 -6px 32px -6px hsla(0, 0%, 0%, 0.02);
+        box-shadow: 0 0.813rem 2.5rem -0.313rem hsla(240, 30.1%, 28%, 0.12), 0 0.5rem 4rem -0.5rem hsla(0, 0%, 0%, 0.14), 0 -0.375rem 4rem -0.375rem hsla(0, 0%, 0%, 0.02);
         }
     }
 
@@ -82,23 +90,27 @@ const GroupCardFooter = styled.div`
 const GroupCardArea = styled.p`
     direction: rtl;
     margin-right: .25rem;
+    color: ${({ palette }) => palette.table.cardAreaText}
 `;
 
 const GroupCardName = styled.h2`
     direction: rtl;
     text-align: center;
+    color: ${({ palette }) => palette.table.cardGroupNameText}
 `;
 
 const GroupCardCategory = styled.h3`
     direction: rtl;
-    color: #14141455;
+    color: ${({ palette }) => palette.table.cardCategoryText}
 `;
 
 const GroupList = () => {
 
     const scrollRef = React.useRef(null);
     const groupStore = useContext(GroupsStore);
-
+    const colorStore = useContext(ColorStore);
+    
+    const { colorPalette } = colorStore;
     const { groups, loadingState } = groupStore;
 
     const loadMoreItems = useCallback(() => {
@@ -115,7 +127,7 @@ const GroupList = () => {
     }, [groupStore, loadingState]);
 
     const handleScrollEvent = useCallback(() => {
-        if (document.documentElement.scrollTop + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 20) {
+        if (document.documentElement.scrollTop + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 10) {
             loadMoreItems();
         }
     }, [loadMoreItems]);
@@ -145,37 +157,36 @@ const GroupList = () => {
     }
 
     return (
-        <PageWrapper>
+        <PageWrapper palette={colorPalette}>
             <SearchBar />
         <TableWrapper ref={scrollRef}>
             {
             
                 (
                     groups.map((group, idx) =>
-                        <GroupCard idx={idx} key={group.group_link}>
+                        <GroupCard idx={idx} key={group.group_link} palette={colorPalette}>
                             <GroupCardHeader>
-                                <GroupCardCategory>
+                                <GroupCardCategory palette={colorPalette}>
                                     {group.category}
                                 </GroupCardCategory>
                                 {getGroupIcon(group.group_link)}
                             </GroupCardHeader>
-                            <GroupCardName>
+                            <GroupCardName palette={colorPalette}>
                                 {group.group_name}
                             </GroupCardName>
                             <GroupCardFooter>
                             <GoLocation />
-                            <GroupCardArea>{group.area || 'כללי'}</GroupCardArea>
+                            <GroupCardArea palette={colorPalette}>{group.area}</GroupCardArea>
                             </GroupCardFooter>
                         </GroupCard>
                     )  
                 )
             }       
-        
-        </TableWrapper>
             {
                 loadingState && 
-                <LoadingSpinner /> 
+                <LoadingSpinner customStyle={SpinnerSpanStyle} /> 
             }
+        </TableWrapper>
         </PageWrapper>
     )
 }

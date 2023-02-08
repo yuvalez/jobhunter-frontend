@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { observer } from 'mobx-react';
-import GroupsStore from '../stores/groupStore';
+import GroupsStore from '../stores/GroupStore';
 
 const FilterRow = () => {
 
