@@ -9,7 +9,7 @@ const darkModePalette = {
 
     },
     search: {
-        inputPlaceholder: "#AAAAAA",
+        inputPlaceholder: "#AAAAAA66",
         inputBackground: "#07101399",
         inputBoxShadow: "#5158bb",
         inputText: "#AAAAAA",
@@ -74,7 +74,7 @@ const lightModePalette = {
         button: "#A5806C",
         buttonHover: "#95705C",
         autoSuggest: {
-            itemBackground: "#fff",
+            background: "#fff",
             itemBackgroundHover: "#f2f2f2",
             listBoxShadow: "#CCC"
         },
