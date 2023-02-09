@@ -35,6 +35,7 @@ const SearchInput = styled.input`
   border: none;
   direction: rtl;
   border-radius: .75rem;
+  -webkit-appearance: none;
   color: ${({ palette }) => palette.search.inputText};
   background-color: ${({ palette }) => palette.search.inputBackground};
   box-shadow: 0px 0px 10px ${({ palette }) => palette.search.inputBoxShadow};
