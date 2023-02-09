@@ -1,8 +1,8 @@
 import React, { useContext, useRef, useState, useEffect } from 'react';
 import { observer } from 'mobx-react';
 import GroupsStore from '../stores/GroupStore';
-import styled, { css } from 'styled-components';
-import { device, size as deviceSize } from '../constants';
+import styled from 'styled-components';
+import { size as deviceSize } from '../constants';
 import PillsFilter from './pillsFilter';
 import DropDownList from './dropDownList';
 import ColorStore from '../stores/ColorStore';
@@ -35,7 +35,9 @@ const SearchInput = styled.input`
   border: none;
   direction: rtl;
   border-radius: .75rem;
-  box-shadow: 0px 0px 10px #ccc;
+  color: ${({ palette }) => palette.search.inputText};
+  background-color: ${({ palette }) => palette.search.inputBackground};
+  box-shadow: 0px 0px 10px ${({ palette }) => palette.search.inputBoxShadow};
   font-size: 18px;
   outline:none;
   &::placeholder {
@@ -65,11 +67,11 @@ const AutoSuggestContainer = styled.div`
   width: 100%;
   position: absolute;
   top: 100%;
-  background-color: #fff;
+  background-color: ${({ palette }) => palette.search.autoSuggest.background};
   opacity: ${params => params.showSuggestions ? '1' : '0'};
   height: ${params => params.showSuggestions ? 'inherit' : '0'};
   max-height: ${params => params.showSuggestions ? '500px' : '0'};
-  box-shadow: 0px 0px 20px #ccc;
+  box-shadow: 0px 0px 4px ${({ palette }) => palette.search.autoSuggest.listBoxShadow};
   border-radius: .75rem;
   z-index: 10;
   direction: rtl;
@@ -90,8 +92,10 @@ const AutoSuggestItem = styled.li`
   cursor: pointer;
   opacity: ${params => params.showSuggestions ? '1' : '0'};
   transition: all .25s ease-in;
+  color: ${({ palette }) => palette.search.inputText};
+  background-color: ${({ palette }) => palette.search.autoSuggest.background};
   &:hover {
-    background-color: #f2f2f2;
+    background-color: ${({ palette }) => palette.search.autoSuggest.itemBackgroundHover};
   }
 `;
 
@@ -135,7 +139,7 @@ const SearchBar = () => {
   const isMobile = width <= deviceSize.tablet;
 
   const { categorySuggestions: suggestions, areaSuggestions, textSearch, setTextSearch, resetGroupsAndSearch,
-          addCategory, removeCategory, categoriesSearch, setFilteredArea, area } = groupStore;
+          addCategory, categoriesSearch, setFilteredArea, area } = groupStore;
 
   
   const handleSearch = (event) => {
@@ -177,6 +181,7 @@ return (
                       e.stopPropagation();
                       setFilteredArea("");
                     }}
+                    colorPalette={colorPalette.search.areaDropDown}
       />
       <InputWithSuggestions>
         <SearchInput
@@ -195,10 +200,11 @@ return (
         }}
         />
         {textSearch && filteredSuggestions.length > 0 && (
-          <AutoSuggestContainer showSuggestions={showSuggestions || true}>
+          <AutoSuggestContainer showSuggestions={showSuggestions || true} palette={colorPalette}>
             <AutoSuggestList ref={suggestRef}>
               {filteredSuggestions.map((suggestion) => (
                 <AutoSuggestItem
+                  palette={colorPalette}
                   key={suggestion}
                   showSuggestions={showSuggestions || true}
                   onClick={(e) => 

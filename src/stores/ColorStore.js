@@ -4,46 +4,100 @@ import { createContext } from 'react';
 
 const darkModePalette = {
     header: {
-        background: "#121212",
-        textColor: "#FFFFFFDE"
+        background: "#071013",
+        textColor: "#AAAAAA"
 
     },
     search: {
-        inputPlaceholder: "#999",
-        button: "#653243",
-        buttonHover: "#883243",
+        inputPlaceholder: "#AAAAAA",
+        inputBackground: "#07101399",
+        inputBoxShadow: "#5158bb",
+        inputText: "#AAAAAA",
+        button: "#3C415C",
+        buttonHover: "#3C517C",
+        autoSuggest: {
+            background: "#071013",
+            itemBackgroundHover: "#171A1C",
+            listBoxShadow: "#5158bb"
+        },
         loadingDots_0: "rgb(111, 163, 240)",
         loadingDots_40: "rgb(111, 200, 240)",
-        loadingDots_100: "rgb(111, 163, 240)"
-        
+        loadingDots_100: "rgb(111, 163, 240)",
+        pills: {
+            color: "#5158bb",
+            borderColor: "#5158bb",
+            closeColor: "#5158bb",
+            backgroundColor: "#5158bb13"
+        },
+        areaDropDown: {
+            buttonBorder: "#5158bb",
+            buttonBackground: "#071013",
+            boxShadow: "#5158bb",
+            text: "#AAAAAA",
+            itemBackground: "#071013",
+            itemBackgroundHover: "#171A1C"
+        }
     },
     body: {
-        background: "#121212",
+        background: "#071013",
     },
     table: {
-        cardBackground: "#323232",
-        cardGroupNameText: "#CFCFCFDE",
-        cardAreaText: "#CFCFCFDE",
-        cardCategoryText: "#CFCFCFDE",
-        cardBorder: "#333",
+        cardBackground: "#1B1D21",
+        cardGroupNameText: "#DFE0E2",
+        cardAreaText: "#DFE0E2",
+        cardCategoryText: "#DFE0E2",
+        cardBorder: "#5158bb",
+    },
+    footer: {
+        background: "#1B1D21",
+        text: "#DFE0E2"
+    },
+    about: {
+        text: "#666",
+        headerText: "#CCC",
+        background: "#121212",
+        shadow: "rgba(255, 255, 255, 0.5)",
+        headerTextShadow: "rgba(255, 255, 255, 0.5)"
     }
 }
 
-const brightModePalette = {
+const lightModePalette = {
     header: {
-        background: "#DEDEDEDE",
+        background: "#DEDEDE",
         textColor: "#000000DE"
     },
     search: {
         inputPlaceholder: "#CCC",
-        button: "#653243",
-        buttonHover: "#883243",
+        inputBackground: "#EFEFEF",
+        inputBoxShadow: "#CCC",
+        inputText: "#333",
+        button: "#A5806C",
+        buttonHover: "#95705C",
+        autoSuggest: {
+            itemBackground: "#fff",
+            itemBackgroundHover: "#f2f2f2",
+            listBoxShadow: "#CCC"
+        },
         loadingDots_0: "rgb(111, 163, 240)",
         loadingDots_40: "rgb(111, 200, 240)",
-        loadingDots_100: "rgb(111, 163, 240)"
+        loadingDots_100: "rgb(111, 163, 240)",
+        pills: {
+            color: "#2470FF",
+            closeColor: "#2470FF",
+            borderColor: "#2470FF",
+            backgroundColor: "#2470FF13"
+        },
+        areaDropDown: {
+            buttonBorder: "#333",
+            buttonBackground: "#EFEFEF",
+            boxShadow: "#CCC",
+            text: "#333",
+            itemBackground: "#EFEFEF",
+            itemBackgroundHover: "#DEDEDE"
+        }
     },
     body: {
-        background: "#DEDEDEDE",
+        background: "#DEDEDE",
     },
     table: {
         cardBackground: "#EFEFEFEF",
@@ -51,13 +105,24 @@ const brightModePalette = {
         cardAreaText: "#121212DE",
         cardCategoryText: "#14141455",
         cardBorder: "#eee",
+    },
+    footer: {
+        background: "#EFEFEFEF",
+        text: "#121212DE"
+    },
+    about: {
+        text: "#666",
+        headerText: "333",
+        background: "#EFEFEF",
+        shadow: "rgba(0, 0, 0, 0.2)",
+        headerTextShadow: "rgba(0, 0, 0, 0.2)"
     }
 }
 
 class ColorStore {
 
     // Ovservables
-    isDarkMode = false;
+    isDarkMode = true;
     
     constructor() {
         makeObservable(this, {
@@ -76,7 +141,7 @@ class ColorStore {
         if (this.isDarkMode) {
             return darkModePalette;
         }
-        return brightModePalette;
+        return lightModePalette;
     }
 }
 

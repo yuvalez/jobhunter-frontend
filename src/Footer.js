@@ -1,18 +1,24 @@
-import React from 'react';
+import { observer } from 'mobx-react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+import ColorStore from './stores/ColorStore';
 
 const FooterDiv = styled.div`
-    padding: 1rem;
-    background-color: #dfdfdf;
-
+    display: flex;
+    // justify-content: center;
+    padding: 1rem 20%;
+    background-color: ${({ palette }) => palette.footer.background};
+    color: ${({ palette }) => palette.footer.text};
 `;
 
 const Footer = () => {
+  const colorStore = useContext(ColorStore);
+  const { colorPalette } = colorStore;
   return (
-    <FooterDiv>
-      <p>Copyright &copy; {new Date().getFullYear()} My Website</p>
+    <FooterDiv palette={colorPalette}>
+      <p>Copyright &copy; {new Date().getFullYear()} Yuval Ezuz</p>
     </FooterDiv>
   );
 };
 
-export default Footer;
+export default observer(Footer);

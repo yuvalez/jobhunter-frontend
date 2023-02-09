@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { observer } from 'mobx-react';
 import { FaTimesCircle } from 'react-icons/fa'
 import GroupsStore from '../stores/GroupStore';
+import ColorStore from '../stores/ColorStore';
 
 
 const Wrapper = styled.div`
@@ -22,10 +23,9 @@ const PillContent = styled.div`
     display: flex;
     font-weight: bold;
     height: 1.8rem;
-    border: 2px solid #2470FF;
+    border: 2px solid ${({ palette }) => palette.search.pills.borderColor};
     border-radius: 4px;
-    color: #2470FF;
-    background-color: #2470FF13;
+    background-color: ${({ palette }) => palette.search.pills.backgroundColor};
     font-size: 1em;
 `;
 
@@ -34,10 +34,11 @@ const PillText = styled.p`
     padding-left: 1.5em;
     display: flex;
     justify-content: center;
+    color: ${({ palette }) => palette.search.pills.color};
 `;
 
 const PillClose = styled.button`
-    color: #2470FF;
+    color: ${({ palette }) => palette.search.pills.closeColor};
     height: 1.5em;
     width: 1.5em;
     background-color: transparent;
@@ -62,15 +63,18 @@ const CloseIcon = styled(FaTimesCircle)`
 const PillsFilter = () => {
 
     const groupStore = useContext(GroupsStore);
+    const colorStore = useContext(ColorStore);
     const { categoriesSearch, removeCategory, resetGroupsAndSearch } = groupStore;
+    const { colorPalette } = colorStore;
     return (
         <Wrapper>
             {
                 categoriesSearch.map(category => (
                     <Pill>
-                        <PillContent>
-                            <PillText>{category}</PillText>
-                            <PillClose 
+                        <PillContent palette={colorPalette}>
+                            <PillText palette={colorPalette}>{category}</PillText>
+                            <PillClose
+                                palette={colorPalette} 
                                 onClick = {() => {
                                     removeCategory(category);
                                     resetGroupsAndSearch();

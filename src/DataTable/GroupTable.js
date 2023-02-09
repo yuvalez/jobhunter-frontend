@@ -114,7 +114,7 @@ const GroupList = () => {
     const { groups, loadingState } = groupStore;
 
     const loadMoreItems = useCallback(() => {
-        const { getDataFromApi, groups, listEnd } = groupStore;
+        const { getDataFromApi, listEnd } = groupStore;
 
         if(loadingState || listEnd){
                 return;
@@ -164,7 +164,7 @@ const GroupList = () => {
             
                 (
                     groups.map((group, idx) =>
-                        <GroupCard idx={idx} key={group.group_link} palette={colorPalette}>
+                        <GroupCard idx={idx} key={group.group_link} palette={colorPalette} href={group.group_link} target="_blank">
                             <GroupCardHeader>
                                 <GroupCardCategory palette={colorPalette}>
                                     {group.category}
@@ -175,7 +175,7 @@ const GroupList = () => {
                                 {group.group_name}
                             </GroupCardName>
                             <GroupCardFooter>
-                            <GoLocation />
+                            <GoLocation color={colorPalette.table.cardAreaText}/>
                             <GroupCardArea palette={colorPalette}>{group.area}</GroupCardArea>
                             </GroupCardFooter>
                         </GroupCard>

@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { IoIosMoon, IoIosSunny } from 'react-icons/io';
 import styled, { keyframes } from 'styled-components';
 import ColorStore from '../stores/ColorStore';
