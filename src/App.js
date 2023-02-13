@@ -9,7 +9,7 @@ import Footer from './Footer';
 import AboutUs from './About';
 import ColorStore from './stores/ColorStore';
 import Login from './Login/Login';
-import RequireToken from './Login/Auth';
+import RequireToken from './Login/RequireToken';
 import PendingGroupsTable from './Admin/PendingGroupsTable';
 
 function App() {

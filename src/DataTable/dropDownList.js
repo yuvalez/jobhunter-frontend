@@ -79,8 +79,6 @@ const DropDownList = ({ options, setText, text, isMobile, defaultOption='', defa
     setShowList(!showList);
   };
 
-  console.log(`window.innerHeight ${window.innerHeight}`);
-
   return (
     <DropdownContainer isMobile={isMobile}>
       <DropdownButton palette={colorPalette} show={showList} onClick={toggleList}>
@@ -90,6 +88,7 @@ const DropDownList = ({ options, setText, text, isMobile, defaultOption='', defa
       <DropdownList palette={colorPalette} show={showList} maxHeight={window.innerHeight}>
         {defaultOption && (
             <DropdownItem
+            key={`dropdown_item_default`}
             palette={colorPalette}
             onClick={e => {
                 defaultOptionAction(e);
@@ -100,6 +99,7 @@ const DropDownList = ({ options, setText, text, isMobile, defaultOption='', defa
         {options.map((option, idx) => (
             <DropdownItem last={idx === options.length - 1} 
                           palette={colorPalette}
+                          key={`dropdown_item_${idx}`}
                           onClick={e => {
                               e.stopPropagation();
                               setText(option);

@@ -22,8 +22,6 @@ class PendingGroupsStore {
     }
 
     removeGroup = (groupId) => {
-        console.log(groupId);
-        console.log(this.groups);
         const filteredGroups = this.groups.filter(g => g.group_id !== groupId);
 
         this.groups = filteredGroups

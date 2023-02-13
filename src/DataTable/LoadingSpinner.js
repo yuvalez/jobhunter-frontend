@@ -49,7 +49,7 @@ const LoadingSpinner = ({ dotCount = 3, customStyle='' }) => {
 
     for (let idx=0; idx < dotCount; idx++) {
         dots.push(
-            <SpinnerDot idx={idx} palette={colorPalette}/>
+            <SpinnerDot key={`dot_${idx}`} idx={idx} palette={colorPalette}/>
         )
     }
     return (

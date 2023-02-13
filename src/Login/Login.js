@@ -2,9 +2,9 @@ import React, { useContext, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { setToken } from './Auth';
 import ColorStore from '../stores/ColorStore';
 import { BASE_URL } from '../constants';
+import AuthStore from '../stores/AuthStore';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -71,6 +71,8 @@ const Login = ({ navigateTo }) => {
   const [error, setError] = useState('');
   const colorStore = useContext(ColorStore)
   const { colorPalette } = colorStore;
+  const authStore = useContext(AuthStore);
+  const { setToken } = authStore;
 
   const handleSubmit = async (event) => {
     event.preventDefault();

@@ -164,7 +164,7 @@ const lightModePalette = {
 class ColorStore {
 
     // Ovservables
-    isDarkMode = true;
+    isDarkMode = localStorage.getItem('HFAColorMode') ? JSON.parse(localStorage.getItem('HFAColorMode')) : true;
     
     constructor() {
         makeObservable(this, {
@@ -177,6 +177,7 @@ class ColorStore {
     // Actions
     toggleDarkMode = () => {
         this.isDarkMode = !this.isDarkMode;
+        localStorage.setItem('HFAColorMode', JSON.stringify(this.isDarkMode))
     }
     
     get colorPalette() {

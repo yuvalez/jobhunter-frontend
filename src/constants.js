@@ -20,8 +20,6 @@ export const device = {
     desktopL: `(min-width: ${size.desktop}px)`
   };
 
-  console.log(device);
-
 
 export const DEFAULT_PAGE_SIZE = 24;
 

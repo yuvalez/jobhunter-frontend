@@ -6,6 +6,7 @@ import ColorStore from '../stores/ColorStore';
 import DarkModeToggle from './DarkModeToggle';
 import { size as deviceSize } from '../constants';
 import websiteLogo from '../images/logo192.png';
+import AuthStore from '../stores/AuthStore';
 
 const NavBar = styled.nav`
     background-color: ${({ palette }) => palette.header.background};
@@ -61,7 +62,10 @@ const Logo = styled.img`
 const Header = () => {
     const colorStore = useContext(ColorStore);
     const { colorPalette } = colorStore;
+    const authStore = useContext(AuthStore);
+    const { fetchToken: token } = authStore;
     const [width, setWidth] = useState(window.innerWidth);
+    // TOOD: Make this stateful -- auth store?
 
     const handleWindowSizeChange = () => {
         setWidth(window.innerWidth);
@@ -83,8 +87,10 @@ const Header = () => {
                 {!isMobile && <span style={{ fontSize: '1em', fontWeight: 'bold', fontFamily: '"Lucida Console", "Courier New"' }}>Hunt for Avoda</span>}
                 
             </SiteName>
-            {/* TODO: add hamburger on mobile */}
             <OptionsGroup>
+                {token && <OptionsGroupItem>
+                    <CustomLink to='/admin'>אדמין</CustomLink>
+                </OptionsGroupItem>}
                 <OptionsGroupItem>
                     <CustomLink to='/about'>מי אנחנו</CustomLink>
                 </OptionsGroupItem>

@@ -2,19 +2,23 @@ import React, { useContext, useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 
 import ColorStore from '../stores/ColorStore';
-import { fetchToken } from '../Login/Auth';
 import { BASE_URL, size as deviceSize } from '../constants';
 import PendingGroupStore from '../stores/PendingGroupStore';
 import Modal from './Modal';
 import PendingGroupsTableDesktop from './PendingGroupsTableDesktop';
 import PendingGroupsTableMobile from './PendingGroupsTableMobile';
+import AuthStore from '../stores/AuthStore';
 
 
 
 const PendingGroupsTable = () => {
 
+    const authStore = useContext(AuthStore);
+
+    const { fetchToken } = authStore;
+
     const pendingGroupsResponse = async (isApproved, groupId) => {
-        const token = fetchToken();
+        const token = fetchToken;
         const response = await fetch(`${BASE_URL}/api/pending_groups/response`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -44,7 +48,7 @@ const PendingGroupsTable = () => {
     const [rowInfo, setRowInfo] = useState({});
 
     useEffect(() => {
-        getPendingGroups(fetchToken());
+        getPendingGroups(fetchToken);
         window.addEventListener('resize', handleWindowSizeChange);
         return () => {
             window.removeEventListener('resize', handleWindowSizeChange);

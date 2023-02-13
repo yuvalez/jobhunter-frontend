@@ -156,7 +156,6 @@ const SearchBar = () => {
 
   const handleInputChange = (event) => {
     setTextSearch(event.target.value);
-    console.log(textSearch);
     const suggestionsWithoutAlreadyChosen = suggestions.filter(el => categoriesSearch.indexOf(el) < 0);
     const filtered = suggestionsWithoutAlreadyChosen.filter((suggestion) =>
       suggestion.toLowerCase().startsWith(event.target.value.toLowerCase())
