@@ -71,7 +71,6 @@ const GroupCard = styled.a`
         box-shadow: 0 0.813rem 2.5rem -0.313rem hsla(240, 30.1%, 28%, 0.12), 0 0.5rem 4rem -0.5rem hsla(0, 0%, 0%, 0.14), 0 -0.375rem 4rem -0.375rem hsla(0, 0%, 0%, 0.02);
         }
     }
-
 `;
 
 const GroupCardHeader = styled.div`

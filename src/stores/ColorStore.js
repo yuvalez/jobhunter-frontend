@@ -58,6 +58,27 @@ const darkModePalette = {
         background: "#121212",
         shadow: "rgba(255, 255, 255, 0.5)",
         headerTextShadow: "rgba(255, 255, 255, 0.5)"
+    },
+    login: {
+        buttonText: "#FFF",
+        buttonBackground: "#3C415C",
+        buttonBackgroundHover: "#3C517C",
+        label: "#AAAAAA",
+        inputBackground: "#07101399",
+        inputBoxShadow: "#5158bb",
+        inputText: "#AAAAAA",
+    },
+    pending: {
+        alternateBackground: "#1B1D21",
+        background: "#2E2D31",
+        text: "#AAA",
+        link: "#EE44EE"
+    },
+    modal: {
+        background: "#1B1D21",
+        text: "#AAA",
+        shadow: "#BBB",
+        exitButton: "#CCC"
     }
 }
 
@@ -116,6 +137,27 @@ const lightModePalette = {
         background: "#EFEFEF",
         shadow: "rgba(0, 0, 0, 0.2)",
         headerTextShadow: "rgba(0, 0, 0, 0.2)"
+    },
+    login: {
+        buttonText: "#000",
+        buttonBackground: "#A5806C",
+        buttonBackgroundHover: "#95705C",
+        label: "#333",
+        inputBackground: "#EFEFEF",
+        inputBoxShadow: "#CCC",
+        inputText: "#333"
+    },
+    pending: {
+        alternateBackground: "#9e9e9e",
+        background: "#DEDEDE",
+        text: "#333",
+        link: "#4444EE"
+    },
+    modal: {
+        background: "#EFEFEF",
+        text: "#333",
+        shadow: "#222",
+        exitButton: "#222"
     }
 }
 

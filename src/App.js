@@ -8,6 +8,9 @@ import Header from './Header/Header';
 import Footer from './Footer';
 import AboutUs from './About';
 import ColorStore from './stores/ColorStore';
+import Login from './Login/Login';
+import RequireToken from './Login/Auth';
+import PendingGroupsTable from './Admin/PendingGroupsTable';
 
 function App() {
   const colorStore = useContext(ColorStore);
@@ -20,6 +23,12 @@ function App() {
           <Routes>
             <Route path="/" element={<GroupList />} />
             <Route path="/about" element={<AboutUs />} />
+            <Route path="/login" element={<Login navigateTo='/admin'/>} />
+            <Route path="/admin" element={
+                                    <RequireToken navigateTo='/login'>
+                                      <PendingGroupsTable />
+                                    </RequireToken>
+                                      } />
           </Routes>
         </div>
         <Footer />
