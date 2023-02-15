@@ -4,14 +4,21 @@ import { createContext } from 'react';
 class AuthStore {
 
     // Ovservables
-    token = [];
+    token = "";
+    reload = false
 
     constructor() {
         makeObservable(this, {
             token: observable,
+            reload: observable,
+            setReload: action,
             setToken: action,
             fetchToken: computed
         })
+    }
+
+    setReload = () => {
+        this.reload = !this.reload;
     }
 
     setToken = (token, ttl=1800) => {
@@ -21,12 +28,13 @@ class AuthStore {
             expiry: now.getTime() + ttl * 1000,
         }
         localStorage.setItem('HFAadminToken', JSON.stringify(item))
+        const itemStr = localStorage.getItem('HFAadminToken')
         this.token = token;
     }
 
     get fetchToken() {
+        const updatedToken = this.token;
         const itemStr = localStorage.getItem('HFAadminToken')
-        
         if (!itemStr) {
             return null;
         }
@@ -36,10 +44,14 @@ class AuthStore {
             localStorage.removeItem('HFAadminToken')
             return null;
         }
-        if (item.token !== this.token) {
+        if (item.token !== updatedToken) {
             this.setToken(item.token);
         }
-        return this.token;
+        return updatedToken;
+    }
+
+    getTokenValue = () => {
+        return this.fetchToken;
     }
 }
 

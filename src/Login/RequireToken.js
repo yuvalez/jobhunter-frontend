@@ -5,8 +5,8 @@ import AuthStore from "../stores/AuthStore";
 
 const RequireToken = ({ children, navigateTo="/" }) => {
     const authStore = useContext(AuthStore);
-    const { fetchToken } = authStore;
-    const auth = fetchToken;
+    const { getTokenValue } = authStore;
+    const auth = getTokenValue();
     const location = useLocation();
     if (!auth) {
       

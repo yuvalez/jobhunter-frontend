@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { observer } from 'mobx-react-lite';
-import { useNavigate } from 'react-router-dom';
+import { observer } from 'mobx-react';
+import { Route, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ColorStore from '../stores/ColorStore';
 import { BASE_URL } from '../constants';
@@ -72,7 +72,8 @@ const Login = ({ navigateTo }) => {
   const colorStore = useContext(ColorStore)
   const { colorPalette } = colorStore;
   const authStore = useContext(AuthStore);
-  const { setToken } = authStore;
+  const { setToken, getTokenValue, setReload } = authStore;
+  const auth = getTokenValue();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -91,10 +92,9 @@ const Login = ({ navigateTo }) => {
       const res = JSON.parse(await response.json());
       if (response.ok && res && res.creds) {
             setToken(res.creds)
-            console.log("WTF");
-            console.log(navigateTo);
+            setReload();
             navigate(navigateTo);
-            navigate(0);
+            // navigate(0);
       } else {
         setError('Incorrect username or password.');
       }
@@ -103,6 +103,10 @@ const Login = ({ navigateTo }) => {
       setError('An error occurred while logging in.');
     }
   };
+  console.log(auth);
+  if (auth) {
+    navigate(navigateTo);
+  }
 
   return (
     <LoginContainer>
