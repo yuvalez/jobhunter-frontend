@@ -87,9 +87,9 @@ const Header = () => {
                 
             </SiteName>
             <OptionsGroup>
-                {token && <OptionsGroupItem>
+                <OptionsGroupItem>
                     <CustomLink to='/admin'>אדמין</CustomLink>
-                </OptionsGroupItem>}
+                </OptionsGroupItem>
                 <OptionsGroupItem>
                     <CustomLink to='/about'>מי אנחנו</CustomLink>
                 </OptionsGroupItem>
