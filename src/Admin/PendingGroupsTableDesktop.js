@@ -46,6 +46,9 @@ const TableCellLink = styled.a`
     padding: 0.5rem;
     gap: 1rem;
     justify-content: space-evenly;
+    text-overflow: clip;
+    overflow:hidden;
+    white-space:nowrap;
     color: ${({ palette }) => palette.pending.link};
 `;
 

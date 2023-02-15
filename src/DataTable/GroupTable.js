@@ -8,6 +8,7 @@ import LoadingSpinner from './LoadingSpinner';
 import GroupsStore from '../stores/GroupStore';
 import SearchBar from './searchBar';
 import ColorStore from '../stores/ColorStore';
+import AddGroupButton from './AddGroup';
 
 const poof = keyframes`
     0% {
@@ -186,6 +187,7 @@ const GroupList = () => {
                 <LoadingSpinner customStyle={SpinnerSpanStyle} /> 
             }
         </TableWrapper>
+        <AddGroupButton />
         </PageWrapper>
     )
 }

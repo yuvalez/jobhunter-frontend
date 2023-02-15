@@ -24,7 +24,6 @@ const PendingGroupsTable = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token, approve: isApproved, group_id: groupId }),
       });
-      console.log(response);
     }
 
     const clickOnApprove = async (e, row) => {

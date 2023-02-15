@@ -91,7 +91,10 @@ const Login = ({ navigateTo }) => {
       const res = JSON.parse(await response.json());
       if (response.ok && res && res.creds) {
             setToken(res.creds)
+            console.log("WTF");
+            console.log(navigateTo);
             navigate(navigateTo);
+            navigate(0);
       } else {
         setError('Incorrect username or password.');
       }

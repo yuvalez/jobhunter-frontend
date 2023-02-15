@@ -85,8 +85,11 @@ const ExitButton = styled(AiOutlineClose)`
     height: 2rem;
     width: 2rem;
     color: ${({ palette }) => palette.modal.exitButton};
+    transition: transform 0.25s ease-in-out;
     &:hover {
         cursor: pointer;
+        transform: scale(1.1) rotate(180deg);
+        
     }
 `;
 

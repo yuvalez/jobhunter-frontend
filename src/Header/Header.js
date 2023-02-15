@@ -65,7 +65,6 @@ const Header = () => {
     const authStore = useContext(AuthStore);
     const { fetchToken: token } = authStore;
     const [width, setWidth] = useState(window.innerWidth);
-    // TOOD: Make this stateful -- auth store?
 
     const handleWindowSizeChange = () => {
         setWidth(window.innerWidth);

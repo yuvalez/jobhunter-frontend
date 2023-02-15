@@ -5,10 +5,29 @@ import { createContext } from 'react';
 const darkModePalette = {
     header: {
         background: "#071013",
-        textColor: "#AAAAAA"
-
+        textColor: "#AAAAAA",
     },
     search: {
+        addGroupButton: "#5158bb",
+        addGroupButtonTooltip: {
+            background: "#5158bb",
+            text: "#AAA"
+        },
+        addGroupModal: {
+            inputBoxShadow: "#BBB",
+            modalBoxShadow: "#BBB",
+            background: "#1B1D21",
+            text: "#AAA",
+            exitButton: "#CCC",
+            inputBackground: "#07101399",
+            inputPlaceholder: "#AAAAAA66",
+            button: "#3C415C",
+            buttonHover: "#3C517C",
+            inputBorder: "#CCC",
+            inputBorderFocus: "#0077cc",
+            buttonText: "#CCC",
+            headerText: "#CCC"
+        },
         inputPlaceholder: "#AAAAAA66",
         inputBackground: "#07101399",
         inputBoxShadow: "#5158bb",
@@ -85,9 +104,29 @@ const darkModePalette = {
 const lightModePalette = {
     header: {
         background: "#DEDEDE",
-        textColor: "#000000DE"
+        textColor: "#000000DE",
     },
     search: {
+        addGroupButton: "#A5806C",
+        addGroupButtonTooltip: {
+            background: "#A5806C",
+            text: "#333"
+        },
+        addGroupModal: {
+            background: "#EFEFEF",
+            text: "#333",
+            exitButton: "#222",
+            inputBoxShadow: "#222",
+            modalBoxShadow: "#222",
+            inputBackground: "#EFEFEF",
+            inputPlaceholder: "#CCC",
+            button: "#A5806C",
+            buttonHover: "#95705C",
+            inputBorder: "#CCC",
+            inputBorderFocus: "#0077cc",
+            buttonText: "#333",
+            headerText: "#222"
+        },
         inputPlaceholder: "#CCC",
         inputBackground: "#EFEFEF",
         inputBoxShadow: "#CCC",
