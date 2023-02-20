@@ -15,25 +15,25 @@ const darkModePalette = {
         },
         addGroupModal: {
             autoSuggest: {
-                background: "#071013",
-                itemBackgroundHover: "#171A1C",
+                background: "#0c1214",
+                itemBackgroundHover: "#1c2224",
                 listBoxShadow: "#5158bb",
                 inputText: "#AAAAAA",
             },
             areaDropDown: {
                 buttonBorder: "#5158bb",
-                buttonBackground: "#07101399",
+                buttonBackground: "#0c1214",
                 boxShadow: "#5158bb",
                 inputText: "#AAAAAA",
-                itemBackground: "#071013",
-                itemBackgroundHover: "#171A1C"
+                itemBackground: "#0c1214",
+                itemBackgroundHover: "#1c2224"
             },
             inputBoxShadow: "#BBB",
             modalBoxShadow: "#BBB",
             background: "#1B1D21",
             inputText: "#AAAAAA",
             exitButton: "#CCC",
-            inputBackground: "#07101399",
+            inputBackground: "#0c1214",
             inputPlaceholder: "#AAAAAA66",
             button: "#3C415C",
             buttonHover: "#3C517C",
@@ -43,14 +43,14 @@ const darkModePalette = {
             headerText: "#CCC"
         },
         inputPlaceholder: "#AAAAAA66",
-        inputBackground: "#07101399",
+        inputBackground: "#0c1214",
         inputBoxShadow: "#5158bb",
         inputText: "#AAAAAA",
         button: "#3C415C",
         buttonHover: "#3C517C",
         autoSuggest: {
-            background: "#071013",
-            itemBackgroundHover: "#171A1C",
+            background: "#0c1214",
+            itemBackgroundHover: "#1c2224",
             listBoxShadow: "#5158bb",
             inputText: "#AAAAAA",
         },
@@ -65,11 +65,11 @@ const darkModePalette = {
         },
         areaDropDown: {
             buttonBorder: "#5158bb",
-            buttonBackground: "#071013",
+            buttonBackground: "#0c1214",
             boxShadow: "#5158bb",
             inputText: "#AAAAAA",
-            itemBackground: "#071013",
-            itemBackgroundHover: "#171A1C"
+            itemBackground: "#0c1214",
+            itemBackgroundHover: "#1c2224"
         }
     },
     body: {
@@ -81,6 +81,8 @@ const darkModePalette = {
         cardAreaText: "#DFE0E2",
         cardCategoryText: "#DFE0E2",
         cardBorder: "#5158bb",
+        cardBoxShadow: "0 0.813rem 2.5rem -0.113rem hsla(240, 30.1%, 28%, 0.12), 0 0.5rem 4rem -0.5rem hsla(0, 0%, 0%, 0.14), 0 -0.375rem 4rem -0.375rem hsla(0, 0%, 0%, 0.02)",
+        cardBoxShadowHover: "0 0.813rem 1.688rem -0.213rem hsla(240, 14%, 50%, 0.3), 0 0.5rem 1rem -0.5rem hsla(0, 0%, 0%, 0.3), 0 -0.375rem 1rem -0.375rem hsla(0, 0%, 0%, 0.03)",
     },
     footer: {
         background: "#1B1D21",
@@ -98,7 +100,7 @@ const darkModePalette = {
         buttonBackground: "#3C415C",
         buttonBackgroundHover: "#3C517C",
         label: "#AAAAAA",
-        inputBackground: "#07101399",
+        inputBackground: "#0c1214",
         inputBoxShadow: "#5158bb",
         inputText: "#AAAAAA",
     },
@@ -125,7 +127,7 @@ const lightModePalette = {
         addGroupButton: "#A5806C",
         addGroupButtonTooltip: {
             background: "#A5806C",
-            text: "#333"
+            text: "#EEE"
         },
         addGroupModal: {
             areaDropDown: {
@@ -148,7 +150,7 @@ const lightModePalette = {
             inputBoxShadow: "#222",
             modalBoxShadow: "#222",
             inputBackground: "#FEFEFE",
-            inputPlaceholder: "#CCC",
+            inputPlaceholder: "#888",
             button: "#A5806C",
             buttonHover: "#95705C",
             inputBorder: "#CCC",
@@ -195,6 +197,8 @@ const lightModePalette = {
         cardAreaText: "#121212DE",
         cardCategoryText: "#14141455",
         cardBorder: "#eee",
+        cardBoxShadow: "0 0.813rem 1.688rem -0.313rem hsla(240, 30.1%, 28%, 0.25), 0 0.5rem 1rem -0.5rem hsla(0, 0%, 0%, 0.3), 0 -0.375rem 1rem -0.375rem hsla(0, 0%, 0%, 0.03)",
+        cardBoxShadowHover: "0 0.813rem 2.5rem -0.313rem hsla(240, 30.1%, 28%, 0.12), 0 0.5rem 4rem -0.5rem hsla(0, 0%, 0%, 0.14), 0 -0.375rem 4rem -0.375rem hsla(0, 0%, 0%, 0.02)",
     },
     footer: {
         background: "#EFEFEFEF",

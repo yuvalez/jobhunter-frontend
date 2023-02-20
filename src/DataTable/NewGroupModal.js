@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { AiOutlineClose } from 'react-icons/ai';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { BASE_URL, size as deviceSize } from '../constants';
 import ColorStore from '../stores/ColorStore';
 import DropDownList from './dropDownList';
@@ -74,6 +74,34 @@ const Fields = styled.div`
   width: 100%;
 `;
 
+const poof = (toBackground) => keyframes`
+    0% {
+        transform: translateY(1.75rem) translateX(-1.5rem);
+        background:transparent;
+    }
+    85% {
+      background:transparent;
+  }
+    100% {
+        transform: translateY(0rem) translateX(0rem);
+        background: ${toBackground};
+    }
+`;
+
+const InputLabel = styled.label`
+  position: absolute;
+  top: -0.75rem;
+  z-index: 1;
+  font-size: 1.2rem;
+  font-family: Helvetica, Arial, sans-serif;
+  right: 0.5rem;
+  background: ${({ palette }) => `linear-gradient(0deg, ${palette.search.addGroupModal.inputBackground} 50%, ${palette.search.addGroupModal.background} 50%)`};
+  color: ${({ palette }) => palette.search.addGroupModal.inputPlaceholder};
+  padding: 0 0.3rem;
+  ${({ palette, animate = false }) => animate && css`animation: ${poof(`linear-gradient(0deg, ${palette.search.addGroupModal.inputBackground} 50%, ${palette.search.addGroupModal.background} 50%)`)} .2s forwards;`}
+  // animation-delay: 0.05s;
+`;
+
 const Input = styled.input`
     display: flex;
     justify-content: center;
@@ -90,7 +118,7 @@ const Input = styled.input`
     overflow:hidden;
     white-space:nowrap;
     font-family: Helvetica, Arial, sans-serif;
-    ${({ isError }) => isError && 'border: 0.18rem solid #EF0000;'}
+    ${({ isError }) => isError && 'border: 0.06rem solid #EF0000;'}
     &:focus {
         outline: none;
         ${({ isError, palette}) => {
@@ -102,6 +130,7 @@ const Input = styled.input`
     }
     &::placeholder {
         font-family: Helvetica, Arial, sans-serif;
+        color: ${({ palette }) => palette.search.addGroupModal.inputPlaceholder};
       }
 `;
 
@@ -153,6 +182,7 @@ const ErrorLine = styled.span`
 const RequiredInputDiv = styled.div`
     display: flex;
     gap: .5rem;
+    position: relative;
 `;
 
 const H1 = styled.h1`
@@ -255,15 +285,16 @@ const NewGroupModal = ({ closeFunction, submitAction = async () => {}, defaultSt
                 <Fields>
                 <InputRow>
                     <RequiredInputDiv>
+                    {formState.area && <InputLabel for="אזור" palette={colorPalette}>אזור</InputLabel>}
                       <DropDownList 
                                   addShadow={false}
-                                  options={["שפלה", "גוש דן", "צפון", "דרום", "השרון", "כללי"]}
+                                  options={["מרכז", "תל אביב", "חיפה", "צפון", "ירושלים", "דרום", "השרון", "כללי"]}
                                   text={formState.area}
                                   setText={(text) => {
                                     setFormState({ ...formState, area: text });
                                   }}
                                   isMobile={isMobile}
-                                  defaultOption="בחר אזור"
+                                  defaultOption="אזור"
                                   defaultOptionAction={(text) => {
                                     setFormState({ ...formState, area: '' });
                                   }}
@@ -274,12 +305,13 @@ const NewGroupModal = ({ closeFunction, submitAction = async () => {}, defaultSt
                 </InputRow>
                 <InputRow>
                     <RequiredInputDiv>
+                    {formState.name && <InputLabel for="שם הקבוצה" palette={colorPalette} animate>שם הקבוצה</InputLabel>}
                         <Input
                             palette={colorPalette}
                             type="text"
                             id="שם הקבוצה"
                             name="name"
-                            placeholder="שם הקבוצה"
+                            placeholder="שם הקבוצה (העתק\י את שם הקבוצה במדויק)"
                             value={formState.name}
                             onChange={handleChange}
                             isError={!!errors.name}
@@ -290,6 +322,7 @@ const NewGroupModal = ({ closeFunction, submitAction = async () => {}, defaultSt
 
                 <InputRow>
                     <RequiredInputDiv>
+                    {formState.link && <InputLabel for="קישור" palette={colorPalette} animate>קישור</InputLabel>}
                         <Input
                             palette={colorPalette}
                             type="text"
@@ -306,7 +339,8 @@ const NewGroupModal = ({ closeFunction, submitAction = async () => {}, defaultSt
 
                 <InputRow>
                     <RequiredInputDiv>
-                    <AutoSuggestInput inputPlaceholder="הקלד קטגוריה..." colorPalette={colorPalette.search.addGroupModal} handleSuggestionClick={handleSuggestionClick} 
+                    {formState.category && <InputLabel for="קטגוריה" palette={colorPalette} animate>קטגוריה</InputLabel>}
+                    <AutoSuggestInput inputPlaceholder="קטגוריה" colorPalette={colorPalette.search.addGroupModal} handleSuggestionClick={handleSuggestionClick} 
                         handleInputChange={(e) => handleInputChange(e, "category")} suggestions={suggestions} textSearch={formState.category} addShadow={false} />
                     </RequiredInputDiv>
                 <ErrorLine isError={errors.category}>שגיאה: {errors.category}</ErrorLine>

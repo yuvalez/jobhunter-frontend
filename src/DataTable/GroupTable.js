@@ -50,14 +50,13 @@ const PageWrapper = styled.div`
     background-color: ${({ palette }) => palette.body.background}
 `;
 
-// TODO: Box shadow dark mode
 const GroupCard = styled.a`
     opacity: 0;
     animation: ${poof} .5s forwards;
     animation-delay: ${props => (props.idx % DEFAULT_PAGE_SIZE) * 0.07}s;
     transition: all .3s ease;
     border: 1px solid ${({ palette }) => palette.table.cardBorder};
-    box-shadow: 0 0.813rem 1.688rem -0.313rem hsla(240, 30.1%, 28%, 0.25), 0 0.5rem 1rem -0.5rem hsla(0, 0%, 0%, 0.3), 0 -0.375rem 1rem -0.375rem hsla(0, 0%, 0%, 0.03);
+    box-shadow: ${({ palette }) => palette.table.cardBoxShadow};
     border-radius: 0.75em;
     background-color: ${({ palette }) => palette.table.cardBackground};
     text-decoration: inherit;
@@ -71,7 +70,7 @@ const GroupCard = styled.a`
     justify-content: space-between;
     &:hover {
         transform: scale(1.03);
-        box-shadow: 0 0.813rem 2.5rem -0.313rem hsla(240, 30.1%, 28%, 0.12), 0 0.5rem 4rem -0.5rem hsla(0, 0%, 0%, 0.14), 0 -0.375rem 4rem -0.375rem hsla(0, 0%, 0%, 0.02);
+        box-shadow: ${({ palette }) => palette.table.cardBoxShadowHover};
         }
     }
 `;
@@ -127,7 +126,7 @@ const FaTrashCustom = styled(FaTrash)`
     color: #EF1232;
     &:hover {
         pointer: cursor;
-        animation: ${popAnimation} 1.3s ease-out;
+        animation: ${popAnimation} 1s ease-out;
     }
 
 `;
@@ -136,7 +135,7 @@ const FaEditCustom = styled(FaEdit)`
     color: #b3b3b3;
     &:hover {
         pointer: cursor;
-        animation: ${popAnimation} 1.3s ease-out;
+        animation: ${popAnimation} 0.7s ease-out;
     }
 `;
 
@@ -215,13 +214,6 @@ const GroupList = () => {
             throw("failed response");
           }
     }
-    // const deleteGroup = async (groupId) => {
-    //     const response = await fetch(`${BASE_URL}/api/delete_group`, {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({ token, group_id: groupId }),
-    //     });
-    // }
 
     const loadMoreItems = useCallback(() => {
         const { getDataFromApi, listEnd } = groupStore;
@@ -298,7 +290,6 @@ const GroupList = () => {
                                             e.preventDefault();
                                             setEditModalOpen(true);
                                             setEditContext(group);
-                                            console.log(group);
                                         }}/>
                                         <FaTrashCustom onClick={async (e) => {
                                                 e.stopPropagation();
