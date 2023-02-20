@@ -111,7 +111,7 @@ const Input = styled.input`
     padding: 1rem 2rem;
     // border: 1px solid ${({ palette }) => palette.search.addGroupModal.inputBorder};
     background-color: ${({ palette }) => palette.search.addGroupModal.inputBackground};
-    color: ${({ palette }) => palette.search.addGroupModal.inputText};
+    color: ${({ palette }) => palette.search.addGroupModal.inputText} !important;
     border: none;
     border-radius: 0.75rem;
     text-overflow: clip;
@@ -127,8 +127,14 @@ const Input = styled.input`
             }
             return (`box-shadow: 0 0 0 1px ${palette.search.addGroupModal.inputBoxShadow};`);
         }
+      }
     }
-    &::placeholder {
+    &:focus::-webkit-input-placeholder {
+      font-family: Helvetica, Arial, sans-serif;
+      color: ${({ palette }) => palette.search.addGroupModal.inputPlaceholder};
+    }
+    
+    &::-webkit-input-placeholder {
         font-family: Helvetica, Arial, sans-serif;
         color: ${({ palette }) => palette.search.addGroupModal.inputPlaceholder};
       }

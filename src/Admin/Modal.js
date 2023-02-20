@@ -105,7 +105,6 @@ const Modal = ({ group, closeFunction, approveFunction, disapproveFunction }) =>
         {header: "קישור", value: group.group_link, component: DataLink, props: {href: group.group_link, target:"_blank"}},
         {header: "קטגוריה", value: group.category, component: DataCell, props:{}},
         {header: "איזור", value: group.area, component: DataCell, props:{}},
-        {header: "תיאור", value: group.description, component: DataCell, props:{}},
     ]
 
     const [width, setWidth] = useState(window.innerWidth);

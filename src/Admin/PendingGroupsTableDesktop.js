@@ -17,7 +17,7 @@ const TableWrapper = styled.div`
 
 const TableRow = styled.div`
     display: grid;
-    grid-template-columns: 1fr 1fr 2fr 1fr 2fr 0.5fr;
+    grid-template-columns: 1fr 1fr 2fr 1fr 0.5fr;
     background-color ${({ palette, alternate }) => alternate ? palette.pending.alternateBackground : palette.pending.background};
     color: ${({ palette }) =>  palette.pending.text};
     padding-top: .75rem;
@@ -86,9 +86,6 @@ const PendingGroupsTableDesktop = ({ groups, setOpen, setRowInfo, colorPalette, 
                     אזור
                 </TableCell>
                 <TableCell>
-                    הסבר
-                </TableCell>
-                <TableCell>
                     אשר/דחה
                 </TableCell>
             </TableHeader>
@@ -119,9 +116,6 @@ const PendingGroupsTableDesktop = ({ groups, setOpen, setRowInfo, colorPalette, 
                             </TableCellLink>
                             <TableCell>
                                 {row.area}
-                            </TableCell>
-                            <TableCell>
-                                {row.description}
                             </TableCell>
                             <TableCell>
                                 <ApproveIcon isOpen={isOpen} color="green" onClick={async (e) => {
