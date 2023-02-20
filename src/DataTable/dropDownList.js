@@ -5,7 +5,7 @@ const DropdownContainer = styled.div`
   position: relative;
   height: 100%;
   display: flex;
-  width: ${({ isMobile }) => isMobile ? '100%': '50%'};
+  width: 100%;
   align-self: center;
 `;
 
@@ -14,8 +14,8 @@ const DropdownButton = styled.button`
   padding: 1rem 2rem;
   background-color: ${({ palette }) => palette.buttonBackground || '#FFF'};
   width: 100%;
-  color: ${({ palette }) => palette.text || '#333'};
-  box-shadow: 0px 0px 10px ${({ palette }) => palette.boxShadow || '#333'};
+  color: ${({ palette }) => palette.inputText || '#333'};
+  ${({ palette, addShadow }) => addShadow && `box-shadow: 0px 0px 10px ${palette.boxShadow || '#333'};`}
   border: none;
   border-bottom: ${({ show, palette }) => (show ? `1px solid ${palette.buttonBorder || '#999'}` : 'none')};
   border-radius: ${({ show }) => (show ? '.75rem .75rem 0 0' : '.75rem')};
@@ -47,13 +47,13 @@ const DropdownList = styled.ul`
   top: 100%;
   left: 0;
   right: 0;
-  color: ${({ palette }) => palette.text || '#333'};
+  color: ${({ palette }) => palette.inputText || '#333'};
   list-style: none;
   padding: 0;
   direction: rtl;
   margin: 0;
   display: ${({ show }) => (show ? 'block' : 'none')};
-  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+  ${({ addShadow }) => addShadow && 'box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);'}
   overflow-y: auto;
   max-height: calc(${({ maxHeight }) => maxHeight * 0.06}rem - 13rem);
   z-index: 100;
@@ -73,19 +73,20 @@ const DropdownItem = styled.li`
   }
 `;
 
-const DropDownList = ({ options, setText, text, isMobile, defaultOption='', defaultOptionAction = () => {}, colorPalette = {} }) => {
+const DropDownList = ({ options, setText, text, defaultOption='', defaultOptionAction = () => {}, colorPalette = {}, addShadow = true }) => {
   const [showList, setShowList] = useState(false);
-  const toggleList = () => {
+  const toggleList = (e) => {
+    e.preventDefault();
     setShowList(!showList);
   };
 
   return (
-    <DropdownContainer isMobile={isMobile}>
-      <DropdownButton palette={colorPalette} show={showList} onClick={toggleList}>
-        <DropCownChoice>{text || defaultOption}</DropCownChoice>
+    <DropdownContainer>
+      <DropdownButton palette={colorPalette} show={showList} onClick={toggleList} addShadow={addShadow}>
+        <DropCownChoice>{text || defaultOption || options[0]}</DropCownChoice>
         <Arrow show={showList} />
       </DropdownButton>
-      <DropdownList palette={colorPalette} show={showList} maxHeight={window.innerHeight}>
+      <DropdownList palette={colorPalette} show={showList} maxHeight={window.innerHeight} addShadow={addShadow}>
         {defaultOption && (
             <DropdownItem
             key={`dropdown_item_default`}

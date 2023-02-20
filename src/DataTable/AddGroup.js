@@ -29,7 +29,7 @@ const Button = styled(BsFillPlusSquareFill)`
     }
 `;
 
-const AddGroupButton = () => {
+const AddGroupButton = ({ submitAction }) => {
 
     const [ismodalOpen, setOpen] = useState(false);
 
@@ -67,7 +67,10 @@ const AddGroupButton = () => {
             }}/>
             </Tooltip>
         </ButtonWrapper>
-        {ismodalOpen && <NewGroupModal closeFunction={() => setOpen(false)} />}
+        {ismodalOpen && <NewGroupModal closeFunction={() => setOpen(false)} submitAction={async (...props) => {
+            submitAction(...props);
+            setOpen(false);
+        }} />}
         </>
     )}
 

@@ -94,7 +94,6 @@ const Login = ({ navigateTo }) => {
             setToken(res.creds)
             setReload();
             navigate(navigateTo);
-            // navigate(0);
       } else {
         setError('Incorrect username or password.');
       }
@@ -103,7 +102,6 @@ const Login = ({ navigateTo }) => {
       setError('An error occurred while logging in.');
     }
   };
-  console.log(auth);
   if (auth) {
     navigate(navigateTo);
   }

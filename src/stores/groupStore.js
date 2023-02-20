@@ -19,6 +19,7 @@ class GroupsStore {
 
     constructor() {
         this.getDataFromApi = this.getDataFromApi.bind(this);
+        this.deleteGroup = this.deleteGroup.bind(this);
         this.resetGroupsAndSearch = this.resetGroupsAndSearch.bind(this);
         this.getCategorySuggestions();
         this.getAreaSuggestions();
@@ -87,6 +88,20 @@ class GroupsStore {
                 this.setCategorySuggestions(categories);
             })
     } 
+
+    async deleteGroup(groupId, token) {
+        const requestData = { group_id: groupId, token };
+        const response = await fetch(`${BASE_URL}/api/delete_group`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Credentials': true },
+            body: JSON.stringify(requestData),
+          });
+        const res = await response.json();
+        if (response.ok && res && res.success) {
+            const newGroup = this.groups.filter(group => group.group_id != groupId);
+            this.setGroups(newGroup);
+        }
+    }
 
     async getAreaSuggestions() {
         const requestData = {field: 'area'};

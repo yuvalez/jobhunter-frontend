@@ -28,13 +28,12 @@ class AuthStore {
             expiry: now.getTime() + ttl * 1000,
         }
         localStorage.setItem('HFAadminToken', JSON.stringify(item))
-        const itemStr = localStorage.getItem('HFAadminToken')
         this.token = token;
     }
 
     get fetchToken() {
         const updatedToken = this.token;
-        const itemStr = localStorage.getItem('HFAadminToken')
+        const itemStr = localStorage.getItem('HFAadminToken');
         if (!itemStr) {
             return null;
         }
@@ -47,7 +46,7 @@ class AuthStore {
         if (item.token !== updatedToken) {
             this.setToken(item.token);
         }
-        return updatedToken;
+        return item.token;
     }
 
     getTokenValue = () => {

@@ -4,11 +4,14 @@ import { AiOutlineClose } from 'react-icons/ai';
 import styled, { css } from 'styled-components';
 import { BASE_URL, size as deviceSize } from '../constants';
 import ColorStore from '../stores/ColorStore';
+import DropDownList from './dropDownList';
+import AutoSuggestInput from './AutoSuggestInput';
+import GroupStore from '../stores/GroupStore';
 
 const ModalBody = styled.div`
     background-color: ${({ palette }) => palette.search.addGroupModal.background};
     position: fixed;
-    height: 80%;
+    height: 90%;
     width: 40%;
     top: 50%;
     left: 50%;
@@ -23,7 +26,7 @@ const ModalBody = styled.div`
 const ModalBodyLaptop = styled.div`
     background-color: ${({ palette }) => palette.search.addGroupModal.background};
     position: fixed;
-    height: 80%;
+    height: 85%;
     width: 40%;
     top: 50%;
     left: 50%;
@@ -33,12 +36,13 @@ const ModalBodyLaptop = styled.div`
     border-radius: 2rem;
     pointer-events: all;
     box-shadow: 0px 0px 10px ${({ palette }) => palette.search.addGroupModal.modalBoxShadow};
+    overflow: auto;
 `;
 
 const ModalBodyMobile = styled.div`
     background-color: ${({ palette }) => palette.search.addGroupModal.background};
     position: fixed;
-    height: 60%;
+    height: 80%;
     padding: 2rem;
     width: 90%;
     top: 40%;
@@ -48,6 +52,7 @@ const ModalBodyMobile = styled.div`
     pointer-events: all;
     border-radius: 2rem;
     box-shadow: 0px 0px 10px ${({ palette }) => palette.search.addGroupModal.modalBoxShadow};
+    overflow: auto;
 `;
 
 const Container = styled.form`
@@ -55,7 +60,18 @@ const Container = styled.form`
   flex-direction: column;
   align-items: flex-start;
   direction: rtl;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+`;
+
+const Fields = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  direction: rtl;
   gap: ${({ isMobile }) => isMobile ? '.25rem' : '1rem'};
+  width: 100%;
 `;
 
 const Input = styled.input`
@@ -63,10 +79,13 @@ const Input = styled.input`
     justify-content: center;
     direction: rtl;
     width: 100%;
-    font-size: 1rem;
-    padding: 0.5rem;
-    border: 1px solid ${({ palette }) => palette.search.addGroupModal.inputBorder};
-    border-radius: 0.5rem;
+    font-size: 1.2rem;
+    padding: 1rem 2rem;
+    // border: 1px solid ${({ palette }) => palette.search.addGroupModal.inputBorder};
+    background-color: ${({ palette }) => palette.search.addGroupModal.inputBackground};
+    color: ${({ palette }) => palette.search.addGroupModal.inputText};
+    border: none;
+    border-radius: 0.75rem;
     text-overflow: clip;
     overflow:hidden;
     white-space:nowrap;
@@ -86,28 +105,6 @@ const Input = styled.input`
       }
 `;
 
-const Textarea = styled.textarea`
-  font-size: 1rem;
-  padding: 0.5rem;
-  border: 1px solid ${({ palette }) => palette.search.addGroupModal.inputBorder};
-  border-radius: 0.25rem;
-  width: 100%;
-  margin-bottom: 1rem;
-  font-family: Helvetica, Arial, sans-serif;
-  ${({ isError }) => isError && 'border: 0.18rem solid #EF0000;'}
-  &::placeholder {
-    font-family: Helvetica, Arial, sans-serif;
-  }
-  &:focus {
-    outline: none;
-    ${({ isError, palette}) => {
-        if (isError) {
-            return ""
-        }
-        return (`box-shadow: 0 0 0 1px ${palette.search.addGroupModal.inputBoxShadow};`);
-    }
-  }
-`;
 
 const Button = styled.button`
   font-size: 1.2rem;
@@ -170,41 +167,27 @@ const initialState = {
     link: "",
     category: "",
     area: "",
-    description: "",
   };
 
-const NewGroupModal = ({ closeFunction }) => {
+const NewGroupModal = ({ closeFunction, submitAction = async () => {}, defaultState = null }) => {
     
 
     const [width, setWidth] = useState(window.innerWidth);
     
-    const [formState, setFormState] = useState(initialState);
+    const [formState, setFormState] = useState(defaultState || initialState);
     const [errors, setErrors] = useState(initialState);
     const [submitError, setSubmitError] = useState('');
   
     const handleSubmit = async (e) => {
       e.preventDefault();
+      e.stopPropagation();
       // Handle form submission here
-      if (!formState.name || !formState.link || !formState.area || !formState.category || !formState.description) {
+      if (!formState.name || !formState.link || !formState.area || !formState.category) {
         setSubmitError("כל השדות חייבים להיות מלאים לפני השליחה");
         return
       }
       try {
-        const response = await fetch(`${BASE_URL}/api/pending_groups/add/`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ group_name: formState.name, 
-                                 group_link: formState.link,
-                                 area: formState.area,
-                                 category: formState.category,
-                                 description: formState.description }),
-        });
-        const res = await response.json();
-        if (response.ok && res && res.success) {
-            closeFunction();
-        } else {
-          setSubmitError('בקשה להוספת לקבוצה נכשלה');
-        }
+        await submitAction(formState.name, formState.link, formState.area, formState.category);
       } catch (error) {
         console.error(error);
         setSubmitError('בקשה להוספת לקבוצה נכשלה');
@@ -249,14 +232,46 @@ const NewGroupModal = ({ closeFunction }) => {
     const isLaptop = width <= deviceSize.desktopS;
     const ModalWrapper = isMobile ? ModalBodyMobile : isLaptop ? ModalBodyLaptop : ModalBody;
     
+    const groupStore = useContext(GroupStore);
+    const { categorySuggestions: suggestions } = groupStore;
+
     const colorStore = useContext(ColorStore);
     const { colorPalette } = colorStore;
+
+    const handleSuggestionClick = (suggestion) => {
+      setFormState({ ...formState, category: suggestion });
+      
+    }
+
+    const handleInputChange = (e, field) => {
+      setFormState({ ...formState, [field]: e.target.value});
+    }
 
     return (
         <ModalWrapper palette={colorPalette}>
             <ExitButton palette={colorPalette} onClick={closeFunction}/>
             <Container onSubmit={handleSubmit} isMobile={isMobile}>
                 <H1 palette={colorPalette}> הוסף קבוצה </H1>
+                <Fields>
+                <InputRow>
+                    <RequiredInputDiv>
+                      <DropDownList 
+                                  addShadow={false}
+                                  options={["שפלה", "גוש דן", "צפון", "דרום", "השרון", "כללי"]}
+                                  text={formState.area}
+                                  setText={(text) => {
+                                    setFormState({ ...formState, area: text });
+                                  }}
+                                  isMobile={isMobile}
+                                  defaultOption="בחר אזור"
+                                  defaultOptionAction={(text) => {
+                                    setFormState({ ...formState, area: '' });
+                                  }}
+                                  colorPalette={colorPalette.search.addGroupModal.areaDropDown}
+                        />
+                    </RequiredInputDiv>
+                <ErrorLine isError={errors.area}>שגיאה: {errors.area}</ErrorLine>
+                </InputRow>
                 <InputRow>
                     <RequiredInputDiv>
                         <Input
@@ -291,51 +306,13 @@ const NewGroupModal = ({ closeFunction }) => {
 
                 <InputRow>
                     <RequiredInputDiv>
-                        <Input
-                            palette={colorPalette}
-                            type="text"
-                            id="קטגוריה"
-                            name="category"
-                            placeholder="קטגוריה"
-                            value={formState.category}
-                            onChange={handleChange}
-                            isError={!!errors.category}
-                        />
+                    <AutoSuggestInput inputPlaceholder="הקלד קטגוריה..." colorPalette={colorPalette.search.addGroupModal} handleSuggestionClick={handleSuggestionClick} 
+                        handleInputChange={(e) => handleInputChange(e, "category")} suggestions={suggestions} textSearch={formState.category} addShadow={false} />
                     </RequiredInputDiv>
                 <ErrorLine isError={errors.category}>שגיאה: {errors.category}</ErrorLine>
                 </InputRow>
 
-                <InputRow>
-                    <RequiredInputDiv>
-                        <Input
-                            palette={colorPalette}
-                            type="text"
-                            id="איזור/עיר"
-                            name="area"
-                            placeholder="איזור/עיר"
-                            value={formState.area}
-                            onChange={handleChange}
-                            isError={!!errors.area}
-                        />
-                    </RequiredInputDiv>
-                <ErrorLine isError={errors.area}>שגיאה: {errors.area}</ErrorLine>
-                </InputRow>
-
-                <InputRow>
-                    <RequiredInputDiv>
-                        <Textarea
-                            palette={colorPalette}
-                            type="text"
-                            id="תיאור"
-                            name="description"
-                            placeholder="תיאור"
-                            value={formState.description}
-                            onChange={handleChange}
-                            isError={!!errors.description}
-                        />
-                    </RequiredInputDiv>
-                <ErrorLine isError={!!errors.description}>שגיאה: {errors.description}</ErrorLine>
-                </InputRow>
+                </Fields>
                 
                 <Button palette={colorPalette}>שלח</Button> 
                 {submitError && <ErrorLine isError>{submitError}</ErrorLine>}

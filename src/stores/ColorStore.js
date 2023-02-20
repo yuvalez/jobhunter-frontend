@@ -14,10 +14,24 @@ const darkModePalette = {
             text: "#AAA"
         },
         addGroupModal: {
+            autoSuggest: {
+                background: "#071013",
+                itemBackgroundHover: "#171A1C",
+                listBoxShadow: "#5158bb",
+                inputText: "#AAAAAA",
+            },
+            areaDropDown: {
+                buttonBorder: "#5158bb",
+                buttonBackground: "#07101399",
+                boxShadow: "#5158bb",
+                inputText: "#AAAAAA",
+                itemBackground: "#071013",
+                itemBackgroundHover: "#171A1C"
+            },
             inputBoxShadow: "#BBB",
             modalBoxShadow: "#BBB",
             background: "#1B1D21",
-            text: "#AAA",
+            inputText: "#AAAAAA",
             exitButton: "#CCC",
             inputBackground: "#07101399",
             inputPlaceholder: "#AAAAAA66",
@@ -37,7 +51,8 @@ const darkModePalette = {
         autoSuggest: {
             background: "#071013",
             itemBackgroundHover: "#171A1C",
-            listBoxShadow: "#5158bb"
+            listBoxShadow: "#5158bb",
+            inputText: "#AAAAAA",
         },
         loadingDots_0: "rgb(111, 163, 240)",
         loadingDots_40: "rgb(111, 200, 240)",
@@ -52,7 +67,7 @@ const darkModePalette = {
             buttonBorder: "#5158bb",
             buttonBackground: "#071013",
             boxShadow: "#5158bb",
-            text: "#AAAAAA",
+            inputText: "#AAAAAA",
             itemBackground: "#071013",
             itemBackgroundHover: "#171A1C"
         }
@@ -113,12 +128,26 @@ const lightModePalette = {
             text: "#333"
         },
         addGroupModal: {
+            areaDropDown: {
+                buttonBorder: "#333",
+                buttonBackground: "#FEFEFE",
+                boxShadow: "#CCC",
+                inputText: "#333",
+                itemBackground: "#FEFEFE",
+                itemBackgroundHover: "#DEDEDE"
+            },
+            autoSuggest: {
+                background: "#fff",
+                itemBackgroundHover: "#f2f2f2",
+                listBoxShadow: "#CCC",
+                inputText: "#333",
+            },
             background: "#EFEFEF",
             text: "#333",
             exitButton: "#222",
             inputBoxShadow: "#222",
             modalBoxShadow: "#222",
-            inputBackground: "#EFEFEF",
+            inputBackground: "#FEFEFE",
             inputPlaceholder: "#CCC",
             button: "#A5806C",
             buttonHover: "#95705C",
@@ -136,11 +165,12 @@ const lightModePalette = {
         autoSuggest: {
             background: "#fff",
             itemBackgroundHover: "#f2f2f2",
-            listBoxShadow: "#CCC"
+            listBoxShadow: "#CCC",
+            inputText: "#333",
         },
-        loadingDots_0: "rgb(111, 163, 240)",
-        loadingDots_40: "rgb(111, 200, 240)",
-        loadingDots_100: "rgb(111, 163, 240)",
+        loadingDots_0: "#A5806C",
+        loadingDots_40: "#A5906C",
+        loadingDots_100: "#A5A06C",
         pills: {
             color: "#2470FF",
             closeColor: "#2470FF",
@@ -151,7 +181,7 @@ const lightModePalette = {
             buttonBorder: "#333",
             buttonBackground: "#EFEFEF",
             boxShadow: "#CCC",
-            text: "#333",
+            inputText: "#333",
             itemBackground: "#EFEFEF",
             itemBackgroundHover: "#DEDEDE"
         }
