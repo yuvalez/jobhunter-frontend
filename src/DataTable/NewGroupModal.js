@@ -92,7 +92,7 @@ const InputLabel = styled.label`
   position: absolute;
   top: -0.75rem;
   z-index: 1;
-  font-size: 1rem;
+  font-size: ${({ isMobile }) => isMobile ? '.79rem' : '1rem'};
   font-family: Helvetica, Arial, sans-serif;
   right: 0.5rem;
   background: ${({ palette }) => `linear-gradient(0deg, ${palette.search.addGroupModal.inputBackground} 50%, ${palette.search.addGroupModal.background} 50%)`};
@@ -106,7 +106,7 @@ const Input = styled.input`
     justify-content: center;
     direction: rtl;
     width: 100%;
-    font-size: 1rem;
+    font-size: ${({ isMobile }) => isMobile ? '.79rem' : '1rem'};
     padding: 1rem 2rem;
     // border: 1px solid ${({ palette }) => palette.search.addGroupModal.inputBorder};
     background-color: ${({ palette }) => palette.search.addGroupModal.inputBackground};
@@ -288,7 +288,7 @@ const NewGroupModal = ({ closeFunction, submitAction = async () => {}, defaultSt
                     <RequiredInputDiv>
                     {formState.area && <InputLabel for="אזור" palette={colorPalette}>אזור</InputLabel>}
                       <DropDownList 
-                                  customStyle={{ fontSize: '1rem' }}
+                                  customStyle={{ fontSize: isMobile ? '0.79rem': '1rem' }}
                                   addShadow={false}
                                   options={["מרכז", "תל אביב", "חיפה", "צפון", "ירושלים", "דרום", "השרון", "כללי"]}
                                   text={formState.area}
@@ -346,7 +346,7 @@ const NewGroupModal = ({ closeFunction, submitAction = async () => {}, defaultSt
                     {formState.category && <InputLabel for="קטגוריה" palette={colorPalette} animate>קטגוריה</InputLabel>}
                     <AutoSuggestInput inputPlaceholder="קטגוריה" colorPalette={colorPalette.search.addGroupModal} handleSuggestionClick={handleSuggestionClick} 
                         handleInputChange={(e) => handleInputChange(e, "category")} suggestions={suggestions} textSearch={formState.category} addShadow={false} 
-                        customStyle={{ fontSize: '1rem'}}/>
+                        customStyle={{ fontSize: isMobile ? '0.79rem': '1rem' }}/>
                     </RequiredInputDiv>
                 <ErrorLine isError={errors.category}>שגיאה: {errors.category}</ErrorLine>
                 </InputRow>
