@@ -33,6 +33,7 @@ const AutoSuggestItem = styled.li`
   opacity: ${params => params.showSuggestions ? '1' : '0'};
   transition: all .25s ease-in;
   color: ${({ palette }) => palette.inputText};
+  font-size: ${({ customStyle }) => (customStyle && customStyle.fontSize) || '1.2rem'};
   background-color: ${({ palette }) => palette.background};
   &:hover {
     background-color: ${({ palette }) => palette.itemBackgroundHover};
@@ -49,7 +50,7 @@ const SearchInput = styled.input`
   color: ${({ palette }) => palette.inputText};
   background-color: ${({ palette }) => palette.inputBackground};
   ${({ palette, addShadow }) => addShadow && `box-shadow: 0px 0px 10px ${palette.inputBoxShadow};`}
-  font-size: 18px;
+  font-size: ${({ customStyle }) => (customStyle && customStyle.fontSize) || '1.2rem'};
   outline:none;
   &::placeholder {
     color: ${({ palette }) => palette.inputPlaceholder};
@@ -66,7 +67,7 @@ const InputWithSuggestions = styled.div`
 `;
 
 const AutoSuggestInput = ({ suggestions, textSearch, colorPalette, inputPlaceholder = "", handleSuggestionClick = () => {}, handleInputChange = () => {},
-                            addShadow = true }) => {
+                            addShadow = true, customStyle = {} }) => {
 
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
@@ -75,6 +76,7 @@ const AutoSuggestInput = ({ suggestions, textSearch, colorPalette, inputPlacehol
   return(
     <InputWithSuggestions>
         <SearchInput
+          customStyle={customStyle}
           palette={colorPalette}
           type="text"
           placeholder={inputPlaceholder}
@@ -103,6 +105,7 @@ const AutoSuggestInput = ({ suggestions, textSearch, colorPalette, inputPlacehol
               <AutoSuggestList ref={suggestRef}>
                 {filteredSuggestions.map((suggestion) => (
                   <AutoSuggestItem
+                    customStyle={customStyle}
                     palette={colorPalette.autoSuggest}
                     key={suggestion}
                     showSuggestions={showSuggestions}

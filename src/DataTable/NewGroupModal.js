@@ -92,14 +92,13 @@ const InputLabel = styled.label`
   position: absolute;
   top: -0.75rem;
   z-index: 1;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-family: Helvetica, Arial, sans-serif;
   right: 0.5rem;
   background: ${({ palette }) => `linear-gradient(0deg, ${palette.search.addGroupModal.inputBackground} 50%, ${palette.search.addGroupModal.background} 50%)`};
   color: ${({ palette }) => palette.search.addGroupModal.inputPlaceholder};
   padding: 0 0.3rem;
   ${({ palette, animate = false }) => animate && css`animation: ${poof(`linear-gradient(0deg, ${palette.search.addGroupModal.inputBackground} 50%, ${palette.search.addGroupModal.background} 50%)`)} .2s forwards;`}
-  // animation-delay: 0.05s;
 `;
 
 const Input = styled.input`
@@ -107,7 +106,7 @@ const Input = styled.input`
     justify-content: center;
     direction: rtl;
     width: 100%;
-    font-size: 1.2rem;
+    font-size: 1rem;
     padding: 1rem 2rem;
     // border: 1px solid ${({ palette }) => palette.search.addGroupModal.inputBorder};
     background-color: ${({ palette }) => palette.search.addGroupModal.inputBackground};
@@ -128,10 +127,6 @@ const Input = styled.input`
             return (`box-shadow: 0 0 0 1px ${palette.search.addGroupModal.inputBoxShadow};`);
         }
       }
-    }
-    &:focus::-webkit-input-placeholder {
-      font-family: Helvetica, Arial, sans-serif;
-      color: ${({ palette }) => palette.search.addGroupModal.inputPlaceholder};
     }
     
     &::-webkit-input-placeholder {
@@ -293,6 +288,7 @@ const NewGroupModal = ({ closeFunction, submitAction = async () => {}, defaultSt
                     <RequiredInputDiv>
                     {formState.area && <InputLabel for="אזור" palette={colorPalette}>אזור</InputLabel>}
                       <DropDownList 
+                                  customStyle={{ fontSize: '1rem' }}
                                   addShadow={false}
                                   options={["מרכז", "תל אביב", "חיפה", "צפון", "ירושלים", "דרום", "השרון", "כללי"]}
                                   text={formState.area}
@@ -313,6 +309,7 @@ const NewGroupModal = ({ closeFunction, submitAction = async () => {}, defaultSt
                     <RequiredInputDiv>
                     {formState.name && <InputLabel for="שם הקבוצה" palette={colorPalette} animate>שם הקבוצה</InputLabel>}
                         <Input
+                            isMobile={isMobile}
                             palette={colorPalette}
                             type="text"
                             id="שם הקבוצה"
@@ -330,6 +327,7 @@ const NewGroupModal = ({ closeFunction, submitAction = async () => {}, defaultSt
                     <RequiredInputDiv>
                     {formState.link && <InputLabel for="קישור" palette={colorPalette} animate>קישור</InputLabel>}
                         <Input
+                            isMobile={isMobile}
                             palette={colorPalette}
                             type="text"
                             id="קישור"
@@ -347,7 +345,8 @@ const NewGroupModal = ({ closeFunction, submitAction = async () => {}, defaultSt
                     <RequiredInputDiv>
                     {formState.category && <InputLabel for="קטגוריה" palette={colorPalette} animate>קטגוריה</InputLabel>}
                     <AutoSuggestInput inputPlaceholder="קטגוריה" colorPalette={colorPalette.search.addGroupModal} handleSuggestionClick={handleSuggestionClick} 
-                        handleInputChange={(e) => handleInputChange(e, "category")} suggestions={suggestions} textSearch={formState.category} addShadow={false} />
+                        handleInputChange={(e) => handleInputChange(e, "category")} suggestions={suggestions} textSearch={formState.category} addShadow={false} 
+                        customStyle={{ fontSize: '1rem'}}/>
                     </RequiredInputDiv>
                 <ErrorLine isError={errors.category}>שגיאה: {errors.category}</ErrorLine>
                 </InputRow>

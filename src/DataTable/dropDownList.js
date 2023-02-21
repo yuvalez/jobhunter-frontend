@@ -19,7 +19,7 @@ const DropdownButton = styled.button`
   border: none;
   border-bottom: ${({ show, palette }) => (show ? `1px solid ${palette.buttonBorder || '#999'}` : 'none')};
   border-radius: ${({ show }) => (show ? '.75rem .75rem 0 0' : '.75rem')};
-  font-size: 1.2rem;
+  font-size: ${({ customStyle }) => (customStyle && customStyle.fontSize) || '1.2rem' };
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -62,7 +62,7 @@ const DropdownList = styled.ul`
 const DropdownItem = styled.li`
   position: relative;
   padding: 1rem 2rem;
-  font-size: 1.2rem;
+  font-size: ${({ customStyle }) => (customStyle && customStyle.fontSize) || '1.2rem' };
   z-index: 100;
   cursor: pointer;  
   direction: rtl;
@@ -73,7 +73,7 @@ const DropdownItem = styled.li`
   }
 `;
 
-const DropDownList = ({ options, setText, text, defaultOption='', defaultOptionAction = () => {}, colorPalette = {}, addShadow = true }) => {
+const DropDownList = ({ options, setText, text, defaultOption='', defaultOptionAction = () => {}, colorPalette = {}, addShadow = true, customStyle = {} }) => {
   const [showList, setShowList] = useState(false);
   const toggleList = (e) => {
     e.preventDefault();
@@ -82,13 +82,14 @@ const DropDownList = ({ options, setText, text, defaultOption='', defaultOptionA
 
   return (
     <DropdownContainer>
-      <DropdownButton palette={colorPalette} show={showList} onClick={toggleList} addShadow={addShadow}>
+      <DropdownButton palette={colorPalette} show={showList} onClick={toggleList} addShadow={addShadow} customStyle={customStyle}>
         <DropCownChoice>{text || defaultOption || options[0]}</DropCownChoice>
         <Arrow show={showList} />
       </DropdownButton>
       <DropdownList palette={colorPalette} show={showList} maxHeight={window.innerHeight} addShadow={addShadow}>
         {defaultOption && (
             <DropdownItem
+            customStyle={customStyle}
             key={`dropdown_item_default`}
             palette={colorPalette}
             onClick={e => {
